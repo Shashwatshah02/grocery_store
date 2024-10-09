@@ -53,8 +53,8 @@ const customerController = {
                 return res.status(404).json({ error: 'Customer not found' });
             }
             // const hashedPassword = await bcrypt.hash(customerPassword, saltRounds); 
-            console.log(hashedPassword, customer.customerPassword)   
-            const match = await bcrypt.compare(hashedPassword, customer.customerPassword);
+            console.log(customerPassword, customer.customerPassword)   
+            const match = await bcrypt.compare(customerPassword, customer.customerPassword);
             console.log(match)
             if (!match) {
                 return res.status(401).json({ error: 'Incorrect password' });

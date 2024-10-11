@@ -1,5 +1,7 @@
 import {getConnection, db} from './db.js';
 import customerRoutes from './routes/customerRoutes.js';
+import productRoutes from './routes/productRoutes.js';
+import categoryRoutes from './routes/categoryRoutes.js';
 
 import express from "express";
 import cors from "cors";

@@ -16,7 +16,7 @@ const deleteCategoryById = async (categoryId) => {
         return result; // Return the result for any additional handling if needed
     } catch (error) {
         // Handle any errors
-        throw new Error("Error deleting the blog post: " + error.message);
+        throw new Error("Error deleting the Category: " + error.message);
     }
 };
 
@@ -24,10 +24,10 @@ const getAllCategories = async () => {
     const [result] = await db.execute("SELECT * FROM categories");
     return result;
 };
-const addCategories = async (categoryName) => {
+const addCategories = async (categoryName, categoryImage) => {
     const [result] = await db.execute(
-        "INSERT INTO categories (categoryName) VALUES (?)",
-        [categoryName]
+        "INSERT INTO categories (categoryName, categoryImage) VALUES (?, ?)",
+        [categoryName, categoryImage]
     );
     return result;
 };

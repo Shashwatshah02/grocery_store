@@ -8,8 +8,10 @@ router.get('/', customerController.getAllCustomers);
 router.post('/', customerController.createCustomer);
 router.put('/forgotpassword', customerController.forgotPassword);
 router.post('/login', customerController.loginCustomer);
+router.get("/edit/:id", customerController.getProfile);
+router.post('/update/:id', customerController.updateProfile);
 // router.put('/:id', customerController.updateCustomer);
-// router.delete('/:id', customerController.deleteCustomer);
+router.delete('/delete/:id', customerController.deleteCustomer);
 
 
 export default router;

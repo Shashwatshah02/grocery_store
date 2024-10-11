@@ -19,11 +19,44 @@ const forgotPassword = async (customerEmail, hashedPassword) => {
     const [result] = await db.execute('UPDATE customer_details SET customerPassword = ? WHERE customerEmail = ?', [hashedPassword, customerEmail]);
     return result;
 };
+const getProfile = async (customerId) => {
+    const query = `SELECT customer_details.customerName, customer_details.customerEmail, customer_details.customerPhone, customer_details.customerAddress, customer_details.customerZipCode, customer_details.customerCity, customer_details.customerCountry, customer_details.customerProfilePicture FROM customer_details WHERE customerId = ?`;
 
+    return db.query(query, [customerId]);
+};
+const updateProfile = async (customerId, updatedProfile) => {
+    const { customerName, customerEmail, customerPhone, customerAddress, customerZipCode, customerCity, customerCountry, customerProfilePicture } = updatedProfile;
+    const [result] = await db.execute(
+        "UPDATE customer_details SET customerName = ?, customerEmail = ?, customerPhone=?, customerAddress=?, customerZipCode=?, customerCity=?, customerCountry=?, customerProfilePicture=?  WHERE customerId = ?",
+        [customerName, customerEmail, customerPhone, customerAddress, customerZipCode, customerCity, customerCountry, customerProfilePicture, customerId]
+    );
+    return result;
+};
+const deleteCustomer = async (customerId) => {
+    try {
+      // Execute the DELETE query
+      const [result] = await db.query("DELETE FROM customer_details WHERE customerId = ?", [
+        customerId,
+      ]);
+  
+      // Check if any rows were affected
+      if (result.affectedRows === 0) {
+        throw new Error("Customer not found."); // If no rows were affected, the blog ID does not exist
+      }
+  
+      return result; // Return the result for any additional handling if needed
+    } catch (error) {
+      // Handle any errors
+      throw new Error("Error deleting the customer: " + error.message);
+    }
+  };
 const customerModel = {
     createCustomer,
     getAllCustomers,
     forgotPassword,
+    getProfile,
+    updateProfile,
+    deleteCustomer
 };
 
 export default customerModel;

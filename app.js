@@ -10,6 +10,8 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 app.use('/customer', customerRoutes);
+app.use('/products', productRoutes);
+app.use('/categories', categoryRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

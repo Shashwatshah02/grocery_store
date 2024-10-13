@@ -34,7 +34,7 @@ const upload = multer({
 }).single("customerProfilePicture");
 
 const customerController = {
-    createCustomer: async (req, res) => {
+     createCustomer: async (req, res) => {
         try {
             const { customerName, customerEmail, customerPhone, customerPassword } = req.body;
             console.log(customerName, customerEmail, customerPhone, customerPassword)

@@ -2,6 +2,7 @@ import {getConnection, db} from './db.js';
 import customerRoutes from './routes/customerRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 app.use('/customer', customerRoutes);
 app.use('/products', productRoutes);
 app.use('/categories', categoryRoutes);
+app.use('/orders', orderRoutes);
 
 app.get("/", (req, res) => {
     res.send("Welcome to the E-commerce API");

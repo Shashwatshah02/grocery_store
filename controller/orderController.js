@@ -1,0 +1,57 @@
+import Order from '../models/orderModel.js';
+
+const orderController = {
+    getAllOrders: async (req, res) => {
+        try {
+            const orders = await Order.getAllOrders();
+            res.status(200).json(orders);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    },
+    createOrders: async (req, res) => {
+        try {
+            const { customerId, productId, orderStatus, totalPrice } = req.body;
+            if (customerId === undefined || productId === undefined || orderStatus === undefined || totalPrice === undefined) {
+                return res.status(400).json({ error: 'All fields are required' });
+            }
+            const order = await Order.createOrders(customerId, productId, orderStatus, totalPrice);
+            res.status(200).json(order);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    },
+    updateOrder: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const { customerId, productId, orderStatus, totalPrice } = req.body;
+            if (customerId === undefined || productId === undefined || orderStatus === undefined || totalPrice === undefined) {x
+                return res.status(400).json({ error: 'All fields are required' });
+            }
+            const order = await Order.updateOrder(customerId, productId, orderStatus, totalPrice);
+            res.status(200).json(order);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    },
+    getOrderById: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const order = await Order.getOrderById(id);
+            res.status(200).json(order);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    },
+    deleteOrderById: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const order = await Order.deleteOrderById(id);
+            res.status(200).json(order);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    },
+};
+
+export default orderController;

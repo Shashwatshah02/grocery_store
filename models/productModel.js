@@ -42,12 +42,49 @@ const deleteProductById = async (productId) => {
     return result;
 }
 
+const getAllVariations = async () => {
+    const [variations] = await db.execute('SELECT * FROM variations');
+    return variations;
+}
+
+const createVariations = async (productId, weightOption, price) => {
+    const [variations] = await db.execute(
+        'INSERT INTO variations (productId, weightOption, price) VALUES (?, ?, ?)',
+        [productId, weightOption, price]
+    );
+    return variations;
+}
+
+const updateVariation = async (variationId, updatedVariation) => {
+    const { weightOption, price } = updatedVariation;
+    const [result] = await db.execute(
+        "UPDATE variations SET weightOption = ?, price = ? WHERE variationId = ?",
+        [weightOption, price, variationId]
+    );
+    return result;
+}
+
+const getVariationById = async (variationId) => {
+    const [variation] = await db.execute('SELECT * FROM variations WHERE variationId = ?', [variationId]);
+    return variation;
+}
+
+const deleteVariationById = async (variationId) => {
+    const [result] = await db.execute('DELETE FROM variations WHERE variationId = ?', [variationId]);
+    return result;
+}
+
 const productModel = {
     getAllProducts,
     createProducts,
     updateProduct,
     getProductById,
     deleteProductById,
+    getAllVariations,
+    createVariations,
+    updateVariation,
+    getVariationById,
+    deleteVariationById
 };
 
 export default productModel;

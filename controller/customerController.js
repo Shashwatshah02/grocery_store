@@ -44,7 +44,7 @@ const customerController = {
             const hashedPassword = await bcrypt.hash(customerPassword, saltRounds);
             const customer = await Customer.createCustomer(customerName, customerEmail, customerPhone, hashedPassword);
             console.log(customer);
-            res.status(200).json(customer);
+            res.render('theme/user-list', { title: 'User List', customers: customer });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
@@ -52,7 +52,7 @@ const customerController = {
     getAllCustomers: async (req, res) => {
         try {
             const customers = await Customer.getAllCustomers();
-            res.status(200).json(customers);
+            res.render('theme/user-list', { title: 'User List', customers: customers });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
@@ -103,7 +103,7 @@ const customerController = {
         try {
             const customer = await Customer.getProfile(customerId);
             if ((customer)) {
-                res.status(200).json(customer);
+                res.render('theme/edit-user', { title: 'User Edit', customer: customer });
             } else {
                 res.status(404).json({ message: "Customer not found" });
             }

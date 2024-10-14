@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', customerController.getAllCustomers);
 // router.get('/:id', customerController.getCustomerById);
-router.post('/', customerController.createCustomer);
+router.post('/create', customerController.createCustomer);
 router.put('/forgotpassword', customerController.forgotPassword);
 router.post('/login', customerController.loginCustomer);
 router.get("/edit/:id", customerController.getProfile);

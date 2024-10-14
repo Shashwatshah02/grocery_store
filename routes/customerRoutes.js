@@ -11,7 +11,7 @@ router.post('/login', customerController.loginCustomer);
 router.get("/edit/:id", customerController.getProfile);
 router.post('/update/:id', customerController.updateProfile);
 // router.put('/:id', customerController.updateCustomer);
-router.delete('/delete/:id', customerController.deleteCustomer);
+router.get('/delete/:id', customerController.deleteCustomer);
 
 
 export default router;

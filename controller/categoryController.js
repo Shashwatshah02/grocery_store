@@ -1,6 +1,7 @@
-import Category from '../models/categoryModel.js';
-import multer from "multer";
-import path from "path";
+const Category = require('../models/categoryModel.js');
+const multer = require("multer");
+const path = require("path");
+
 
 const storage = multer.diskStorage({
     destination: "./uploads/category/",
@@ -71,4 +72,4 @@ const categoryController = {
     },
 }
 
-export default categoryController;
+module.exports = categoryController;

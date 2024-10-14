@@ -1,4 +1,5 @@
-import { db } from "../db.js";
+const { db } = require("../db.js");
+
 
 const createCustomer = async (customerName, customerEmail, customerPhone, hashedPassword) => {
     // console.log(customerName, customerEmail, customerPhone, hashedPassword)
@@ -59,4 +60,4 @@ const customerModel = {
     deleteCustomer
 };
 
-export default customerModel;
+module.exports = customerModel;

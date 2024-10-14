@@ -1,5 +1,5 @@
-import express from "express";
-import orderController from "../controller/orderController.js";
+const express = require("express");
+const orderController = require("../controller/orderController.js");
 
 const router = express.Router();
 
@@ -11,4 +11,4 @@ router.delete('/delete/:id', orderController.deleteOrderById);
 
 
 
-export default router;
+module.exports = router;

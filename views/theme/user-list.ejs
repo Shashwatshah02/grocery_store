@@ -342,7 +342,7 @@
                               </td>
                               <td>
                                 <form action="/customer/delete/<%= customer.customerId %>" method="DELETE"
-                                  style="display: inline;">
+                                  style="display: inline;" onsubmit="return confirmDelete();">
                                   <button class="btn btn-danger btn-xs" type="submit" title="Delete">Delete</button>
                                 </form>
                                 <a href="/customer/edit/<%= customer.customerId %>">
@@ -394,6 +394,12 @@
   <script src="../assets/js/theme-customizer/customizer.js"></script>
   <!-- login js-->
   <!-- Plugin used-->
+  <script>
+    function confirmDelete() {
+      return confirm("Are you sure you want to delete this customer? All orders and corresponding details will be deleted too.");
+    }
+  </script>
 </body>
+
 
 </html>

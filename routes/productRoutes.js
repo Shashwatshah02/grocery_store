@@ -1,5 +1,6 @@
-import express from "express";
-import productController from "../controller/productController.js";
+const express = require("express");
+const productController = require("../controller/productController.js");
+
 
 const router = express.Router();    
 
@@ -15,4 +16,4 @@ router.get('/variations/update/:id', productController.getVariationById);
 router.delete('/variations/delete/:id', productController.deleteVariationById);
 
 
-export default router;
+module.exports = router;

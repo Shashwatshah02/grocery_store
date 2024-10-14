@@ -1,4 +1,5 @@
-import { db } from "../db.js";
+const { db } = require("../db.js");
+
 
 const getAllProducts = async () => {
     const [products] = await db.execute('SELECT * FROM product_details');
@@ -87,4 +88,4 @@ const productModel = {
     deleteVariationById
 };
 
-export default productModel;
+module.exports = productModel;

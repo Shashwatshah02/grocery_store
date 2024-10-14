@@ -1,4 +1,5 @@
-import { db } from "../db.js";
+const { db } = require("../db.js");
+
 
 const getAllOrders = async () => {
     const [orders] = await db.execute('SELECT * FROM orders');
@@ -33,4 +34,4 @@ const orderModel = {
     deleteOrderById,
 };
 
-export default orderModel;
+module.exports = orderModel;

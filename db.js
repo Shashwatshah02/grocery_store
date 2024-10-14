@@ -1,16 +1,17 @@
-import mysql from 'mysql2/promise';
+const mysql = require('mysql2/promise');
+
 
 // Create a MySQL connection pool
-export const db = mysql.createPool({
-    host: 'localhost',    // Replace with your host (e.g., '127.0.0.1' or 'localhost')
-    user: 'root',         // Replace with your MySQL username
-    password: '',     // Replace with your MySQL password
-    database: 'grocery',     // Replace with your database name
+const db = mysql.createPool({
+    host: '148.72.245.164',    // Replace with your host (e.g., '127.0.0.1' or 'localhost')
+    user: 'partnerinai_grocery',         // Replace with your MySQL username
+    password: 'Grocery@123',     // Replace with your MySQL password
+    database: 'partnerinai_grocery_store',     // Replace with your database name
     connectionLimit: 10   // Limit for concurrent connections
 });
 
 // Function to get a connection
-export const getConnection = async () => {
+const getConnection = async () => {
     try {
         const connection = await db.getConnection();
         console.log('Successfully connected to the database');
@@ -20,3 +21,5 @@ export const getConnection = async () => {
         throw err;
     }
 };
+
+module.exports = { db, getConnection };

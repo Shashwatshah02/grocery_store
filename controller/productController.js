@@ -1,6 +1,7 @@
-import Product from "../models/productModel.js";
-import multer from "multer";
-import path from 'path';
+const Product = require("../models/productModel.js");
+const multer = require("multer");
+const path = require("path");
+
 
 const storage = multer.diskStorage({
     destination: "./uploads/products/",
@@ -154,4 +155,4 @@ const productController = {
 
 }
 
-export default productController;
+module.exports = productController;

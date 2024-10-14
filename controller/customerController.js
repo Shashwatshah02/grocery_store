@@ -1,9 +1,10 @@
-import Customer from '../models/customerModel.js';
-import bcrypt from "bcrypt"
-import multer from "multer";
-import path from 'path';
-import jwt from 'jsonwebtoken';
+const Customer = require('../models/customerModel.js');
+const bcrypt = require("bcrypt");
+const multer = require("multer");
+const path = require("path");
+const jwt = require("jsonwebtoken");
 const saltRounds = 10;
+
 
 const storage = multer.diskStorage({
     destination: "./uploads/profile/",
@@ -134,7 +135,7 @@ const customerController = {
         try {
             const result = await Customer.deleteCustomer(customerId); // Assuming you have this method in your Blog model
             //   res.redirect("/api/blogs/all");
-            res.status(200).json(result)
+            res.redirect("/customer");
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
@@ -142,4 +143,4 @@ const customerController = {
 
 }
 
-export default customerController;
+module.exports = customerController;

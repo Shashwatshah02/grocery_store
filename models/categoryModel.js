@@ -1,4 +1,5 @@
-import { db } from "../db.js";
+const { db } = require("../db.js");
+
 
 const deleteCategoryById = async (categoryId) => {
     try {
@@ -38,4 +39,4 @@ const categoryModel = {
     deleteCategoryById,
 };
 
-export default categoryModel;
+module.exports = categoryModel;

@@ -3,51 +3,64 @@ const categoryController = require("../controller/categoryController.js");
 const customerController = require("../controller/customerController.js");
 const orderController = require("../controller/orderController.js");
 const productController = require("../controller/productController.js");
-const { db } = require('./db.js');
+const { db } = require('../db.js');
 
+
+const app = express();
 const router = express.Router();
 
+
+
+// app.use(
+//     session({
+//         secret: "your-secret-key", // Replace with your own secret key
+//         resave: false, // Don't save session if it hasn't been modified
+//         saveUninitialized: false, // Don't create session until something is stored
+//         cookie: { maxAge: 60000 }, // Session expiration time (optional, 60 seconds in this example)
+//     })
+// );
+
 // PRODUCT ROUTES
-router.get('product/', productController.getAllProductsAdmin);
-router.post('product/', productController.createProductsAdmin);
-router.post('product/update/:id', productController.updateProductAdmin);
-router.get('product/update/:id', productController.getProductByIdAdmin);
-router.get('product/delete/:id', productController.deleteProductByIdAdmin);
-router.get('product/variations/', productController.getAllVariationsAdmin);
-router.post('product/variations/', productController.createVariationsAdmin);
-router.post('product/variations/update/:id', productController.updateVariationAdmin);
-router.get('product/variations/update/:id', productController.getVariationByIdAdmin);
-router.get('product/variations/delete/:id', productController.deleteVariationByIdAdmin);
+router.get('/product/', productController.getAllProductsAdmin);
+router.post('/product/', productController.createProductsAdmin);
+router.post('/product/update/:id', productController.updateProductAdmin);
+router.get('/product/update/:id', productController.getProductByIdAdmin);
+router.get('/product/delete/:id', productController.deleteProductByIdAdmin);
+router.get('/product/variations/', productController.getAllVariationsAdmin);
+router.post('/product/variations/', productController.createVariationsAdmin);
+router.post('/product/variations/update/:id', productController.updateVariationAdmin);
+router.get('/product/variations/update/:id', productController.getVariationByIdAdmin);
+router.get('/product/variations/delete/:id', productController.deleteVariationByIdAdmin);
 
 
 // CATEGORY ROUTES
-router.get("categories/", categoryController.getAllCategoriesAdmin);
-router.post("categories/", categoryController.addCategoriesAdmin);
-router.get("categories/delete/:id", categoryController.deleteCategorybyIdAdmin);
+router.get("/categories/", categoryController.getAllCategoriesAdmin);
+router.post("/categories/", categoryController.addCategoriesAdmin);
+router.get("/categories/delete/:id", categoryController.deleteCategorybyIdAdmin);
 
 
 // CUSTOMER ROUTES
-router.get('customer/', customerController.getAllCustomersAdmin);
+router.get('/customer/', customerController.getAllCustomersAdmin);
 // router.get('/:id', customerController.getCustomerById);
-router.post('customer/', customerController.createCustomerAdmin);
-router.post('customer/create', customerController.createCompleteCustomerAdmin);
-router.post('customer/forgotpassword', customerController.forgotPasswordAdmin);
-router.post('customer/login', customerController.loginCustomerAdmin);
-router.get("customer/edit/:id", customerController.getProfileAdmin);
-router.post('customer/update/:id', customerController.updateProfileAdmin);
+// router.post('customer/', customerController.createCustomerAdmin);
+router.post('/customer/create', customerController.createCompleteCustomerAdmin);
+router.post('/customer/forgotpassword', customerController.forgotPasswordAdmin);
+router.post('/customer/login', customerController.loginCustomerAdmin);
+router.get("/customer/edit/:id", customerController.getProfileAdmin);
+router.post('/customer/update/:id', customerController.updateProfileAdmin);
 // router.put('/:id', customerController.updateCustomer);
-router.get('customer/delete/:id', customerController.deleteCustomerAdmin);
-router.get("customer/create", (req, res) => {
+router.get('/customer/delete/:id', customerController.deleteCustomerAdmin);
+router.get("/customer/create", (req, res) => {
     res.render("theme/user-create", { title: "User Registration" });
 });
 
 
 // ORDER ROUTES
-router.get('order/', orderController.getAllOrdersAdmin);
-router.post('order/', orderController.createOrdersAdmin);
-router.post('order/update/:id', orderController.updateOrderAdmin);
-router.get('order/update/:id', orderController.getOrderByIdAdmin);
-router.get('order/delete/:id', orderController.deleteOrderByIdAdmin);
+router.get('/order/', orderController.getAllOrdersAdmin);
+router.post('/order/', orderController.createOrdersAdmin);
+router.post('/order/update/:id', orderController.updateOrderAdmin);
+router.get('/order/update/:id', orderController.getOrderByIdAdmin);
+router.get('/order/delete/:id', orderController.deleteOrderByIdAdmin);
 
 // LOGIN ROUTES
 router.route("/login")

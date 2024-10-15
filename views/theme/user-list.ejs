@@ -341,11 +341,11 @@
                                 <%= customer.customerZipCode %>
                               </td>
                               <td>
-                                <form action="/customer/delete/<%= customer.customerId %>" method="DELETE"
+                                <form action="/admin/customer/delete/<%= customer.customerId %>" method="DELETE"
                                   style="display: inline;" onsubmit="return confirmDelete();">
                                   <button class="btn btn-danger btn-xs" type="submit" title="Delete">Delete</button>
                                 </form>
-                                <a href="/customer/edit/<%= customer.customerId %>">
+                                <a href="/admin/customer/edit/<%= customer.customerId %>">
                                   <button class="btn btn-primary btn-xs" type="button" title="Edit">Edit</button>
                                 </a>
                               </td>

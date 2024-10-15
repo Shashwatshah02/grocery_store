@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/', verifyToken, customerController.getAllCustomers);
 // router.get('/:id', customerController.getCustomerById);
 router.post('/', verifyToken, customerController.createCustomer);
-router.post('/create', verifyToken, customerController.createCompleteCustomer);
+// router.post('/create', verifyToken, customerController.createCompleteCustomer);
 router.post('/forgotpassword', verifyToken, customerController.forgotPassword);
 router.post('/login', verifyToken, customerController.loginCustomer);
 router.get("/edit/:id", verifyToken, customerController.getProfile);

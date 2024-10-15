@@ -14,6 +14,17 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 const app = express();
+app.use(
+    session({
+        secret: "your-secret-key", // Replace with your own secret key
+        resave: false, // Don't save session if it hasn't been modified
+        saveUninitialized: false, // Don't create session until something is stored
+        cookie: { maxAge: 60000 }, // Session expiration time (optional, 60 seconds in this example)
+    })
+);
+
+
+
 app.set('view engine', 'ejs');
 app.set('views', './views');
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -28,14 +39,6 @@ app.use('/orders', orderRoutes);
 app.use('/admin', adminRoutes);
 
 
-app.use(
-    session({
-        secret: "your-secret-key", // Replace with your own secret key
-        resave: false, // Don't save session if it hasn't been modified
-        saveUninitialized: false, // Don't create session until something is stored
-        cookie: { maxAge: 60000 }, // Session expiration time (optional, 60 seconds in this example)
-    })
-);
 
 app.get("/", (req, res) => {
     res.send("Welcome to the Ecommerce Grocery Shopping");

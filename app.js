@@ -3,6 +3,7 @@ const customerRoutes = require('./routes/customerRoutes.js');
 const productRoutes = require('./routes/productRoutes.js');
 const categoryRoutes = require('./routes/categoryRoutes.js');
 const orderRoutes = require('./routes/orderRoutes.js');
+const adminRoutes = require('./routes/adminRoutes.js');
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
@@ -24,6 +25,7 @@ app.use('/customer', customerRoutes);
 app.use('/products', productRoutes);
 app.use('/categories', categoryRoutes);
 app.use('/orders', orderRoutes);
+app.use('/admin', adminRoutes);
 
 
 app.use(
@@ -37,59 +39,6 @@ app.use(
 
 app.get("/", (req, res) => {
     res.send("Welcome to the Ecommerce Grocery Shopping");
-});
-
-
-
-app.route("/login")
-    .get((req, res) => {
-        res.render("login", { title: "Login", layout: false });
-    })
-    .post(async (req, res) => {
-        try {
-            const { username, password } = req.body;
-            console.log(username, password);
-            // Check if username and password are not undefined
-            if (!username || !password) {
-                return res
-                    .status(400)
-                    .render("login", { error: "Username and password are required" });
-            }
-
-            const [user] = await db.execute(`SELECT * FROM users WHERE username = ?`, [username]);
-
-            if (!user || !user.length) {
-                // Username not found
-                return res
-                    .status(400)
-                    .render("login", { error: "Username does not exist" });
-            }
-
-            // Check if the password matches
-            if (user[0].password === password) {
-                req.session.isLoggedIn = true; // Set session variable
-                req.session.user = { username };
-                return res.render('theme/index', { title: 'Home Page' });
-
-            } else {
-                // Password is incorrect
-                return res.status(401).render("login", { error: "Incorrect password" });
-            }
-        } catch (error) {
-            // Handle any server-side errors
-            return res.status(500).json({ error: error.message });
-        }
-    });
-
-
-app.post('/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error('Error logging out:', err);
-        } else {
-            res.redirect('/login'); // Redirect to login page after logging out
-        }
-    });
 });
 
 

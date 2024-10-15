@@ -1,19 +1,20 @@
 const express = require("express");
 const productController = require("../controller/productController.js");
+const { verifyToken } = require("../middleware/jwt.js");
 
 
-const router = express.Router();    
+const router = express.Router();
 
-router.get('/', productController.getAllProducts);
-router.post('/', productController.createProducts);
-router.put('/update/:id', productController.updateProduct);
-router.get('/update/:id', productController.getProductById);
-router.delete('/delete/:id', productController.deleteProductById);
-router.get('/variations/', productController.getAllVariations);
-router.post('/variations/', productController.createVariations);
-router.put('/variations/update/:id', productController.updateVariation);
-router.get('/variations/update/:id', productController.getVariationById);
-router.delete('/variations/delete/:id', productController.deleteVariationById);
+router.get('/', verifyToken, productController.getAllProducts);
+router.post('/', verifyToken, productController.createProducts);
+router.post('/update/:id', verifyToken, productController.updateProduct);
+router.get('/update/:id', verifyToken, productController.getProductById);
+router.get('/delete/:id', verifyToken, productController.deleteProductById);
+router.get('/variations/', verifyToken, productController.getAllVariations);
+router.post('/variations/', verifyToken, productController.createVariations);
+router.post('/variations/update/:id', verifyToken, productController.updateVariation);
+router.get('/variations/update/:id', verifyToken, productController.getVariationById);
+router.get('/variations/delete/:id', verifyToken, productController.deleteVariationById);
 
 
 module.exports = router;

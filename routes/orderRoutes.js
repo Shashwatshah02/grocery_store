@@ -1,13 +1,14 @@
 const express = require("express");
 const orderController = require("../controller/orderController.js");
+const { verifyToken } = require("../middleware/jwt.js");
 
 const router = express.Router();
 
-router.get('/', orderController.getAllOrders);
-router.post('/', orderController.createOrders);
-router.put('/update/:id', orderController.updateOrder);
-router.get('/update/:id', orderController.getOrderById);
-router.delete('/delete/:id', orderController.deleteOrderById);
+router.get('/', verifyToken, orderController.getAllOrders);
+router.post('/', verifyToken, orderController.createOrders);
+router.post('/update/:id', verifyToken, orderController.updateOrder);
+router.get('/update/:id', verifyToken, orderController.getOrderById);
+router.get('/delete/:id', verifyToken, orderController.deleteOrderById);
 
 
 

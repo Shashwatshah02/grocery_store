@@ -251,87 +251,97 @@
               <div class="col-sm-12">
                 <div class="card">
                   <div class="card-body">
-                    <div class="form theme-form">
+                    <form action="/customer/create" method="POST" enctype="multipart/form-data" class="form theme-form">
+                      <!-- Name input -->
                       <div class="row">
                         <div class="col">
                           <div class="mb-3">
-                            <label> Name</label>
-                            <input class="form-control" type="text" placeholder="Enter Name">
+                            <label>Name</label>
+                            <input class="form-control" type="text" name="customerName" placeholder="Enter Name">
                           </div>
                         </div>
                       </div>
+                      
+                      <!-- Password input -->
                       <div class="row">
                         <div class="col">
                           <div class="mb-3">
                             <label>Password</label>
-                            <input class="form-control" type="text" placeholder="Enter Password">
+                            <input class="form-control" type="password" name="customerPassword" placeholder="Enter Password">
                           </div>
                         </div>
                       </div>
+          
+                      <!-- Email, Phone, Country inputs -->
                       <div class="row">
                         <div class="col-sm-4">
                           <div class="mb-3">
                             <label>Email</label>
-                            <input class="form-control" type="text" placeholder="Enter Email">
+                            <input class="form-control" type="email" name="customerEmail" placeholder="Enter Email">
                           </div>
                         </div>
                         <div class="col-sm-4">
                           <div class="mb-3">
                             <label>Phone</label>
-                            <input class="form-control" type="text" placeholder="Enter Phone">
+                            <input class="form-control" type="text" name="customerPhone" placeholder="Enter Phone">
                           </div>
                         </div>
                         <div class="col-sm-4">
                           <div class="mb-3">
                             <label>Country</label>
-                            <input class="form-control" type="text" placeholder="Enter Country">
+                            <input class="form-control" type="text" name="customerCountry" placeholder="Enter Country">
                           </div>
                         </div>
                       </div>
+          
+                      <!-- Address, Zip Code, City inputs -->
                       <div class="row">
                         <div class="col-sm-4">
                           <div class="mb-3">
                             <label>Address</label>
-                            <input class="form-control" type="text" placeholder="Enter Address">
+                            <input class="form-control" type="text" name="customerAddress" placeholder="Enter Address">
                           </div>
                         </div>
                         <div class="col-sm-4">
                           <div class="mb-3">
                             <label>Zip Code</label>
-                            <input class="form-control" type="text" placeholder="Enter Zip-code">
+                            <input class="form-control" type="text" name="customerZipCode" placeholder="Enter Zip-code">
                           </div>
                         </div>
                         <div class="col-sm-4">
                           <div class="mb-3">
                             <label>City</label>
-                            <input class="form-control" type="text" placeholder="Enter City">
+                            <input class="form-control" type="text" name="customerCity" placeholder="Enter City">
                           </div>
                         </div>
                       </div>
-                      
+          
+                      <!-- Profile Picture Upload -->
                       <div class="row">
                         <div class="col">
                           <div class="mb-3">
-                            <label>Upload Profile picture</label>
-                            <form class="dropzone" id="singleFileUpload" action="/upload.php">
-                              <div class="dz-message needsclick"><i class="icon-cloud-up"></i>
-                                <h6>Upload Profile picture</h6>
-                              </div>
-                            </form>
+                            <label>Upload Profile Picture</label>
+                            <input class="form-control" type="file" name="customerProfilePicture" accept="image/*">
                           </div>
                         </div>
                       </div>
+          
+                      <!-- Submit and Cancel buttons -->
                       <div class="row">
                         <div class="col">
-                          <div class="text-end"><a class="btn btn-secondary me-3" href="#">Add</a><a class="btn btn-danger" href="#">Cancel</a></div>
+                          <div class="text-end">
+                            <button type="submit" class="btn btn-secondary me-3">Add</button>
+                            <a class="btn btn-danger" href="#">Cancel</a>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </form>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          
           <!-- Container-fluid Ends-->
         </div>
         <!-- footer start-->

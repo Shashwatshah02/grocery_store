@@ -39,6 +39,8 @@ app.get("/", (req, res) => {
     res.send("Welcome to the Ecommerce Grocery Shopping");
 });
 
+
+
 app.route("/login")
     .get((req, res) => {
         res.render("login", { title: "Login", layout: false });

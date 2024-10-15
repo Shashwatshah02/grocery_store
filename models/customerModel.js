@@ -25,6 +25,16 @@ const getProfile = async (customerId) => {
 
     return db.query(query, [customerId]);
 };
+
+const createCompleteCustomer = async (customer) => {
+    const { customerName, customerPassword, customerEmail, customerPhone, customerAddress, customerZipCode, customerCity, customerCountry, customerProfilePicture } = customer;
+    const [result] = await db.execute(
+        "INSERT INTO customer_details (customerName, customerPassword, customerEmail, customerPhone, customerAddress, customerZipCode, customerCity, customerCountry, customerProfilePicture) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        [customerName, customerPassword, customerEmail, customerPhone, customerAddress, customerZipCode, customerCity, customerCountry, customerProfilePicture]
+    );
+    return result;
+}
+
 const updateProfile = async (customerId, updatedProfile) => {
     const { customerName, customerEmail, customerPhone, customerAddress, customerZipCode, customerCity, customerCountry, customerProfilePicture } = updatedProfile;
     const [result] = await db.execute(
@@ -57,7 +67,8 @@ const customerModel = {
     forgotPassword,
     getProfile,
     updateProfile,
-    deleteCustomer
+    deleteCustomer,
+    createCompleteCustomer
 };
 
 module.exports = customerModel;

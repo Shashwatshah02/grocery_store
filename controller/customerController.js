@@ -35,7 +35,7 @@ const upload = multer({
 }).single("customerProfilePicture");
 
 const customerController = {
-     createCustomer: async (req, res) => {
+    createCustomer: async (req, res) => {
         try {
             const { customerName, customerEmail, customerPhone, customerPassword } = req.body;
             console.log(customerName, customerEmail, customerPhone, customerPassword)
@@ -49,6 +49,23 @@ const customerController = {
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
+    },
+    createCompleteCustomer: async (req, res) => {
+        upload(req, res, async (err) => {
+            if (err) {
+                return res.status(400).json({ error: err });
+            }
+            // console.log(req.file);
+            const { customerName, customerPassword, customerEmail, customerPhone, customerAddress, customerZipCode, customerCity, customerCountry } = req.body;
+            const customerProfilePicture = req.file ? req.file.path : null;
+            console.log(req.body);
+            try {
+                const result = await Customer.createCompleteCustomer( { customerName, customerPassword, customerEmail, customerPhone, customerAddress, customerZipCode, customerCity, customerCountry, customerProfilePicture });
+                res.redirect('/customer') // Redirect to all blogs after successful update
+            } catch (error) {
+                res.status(500).json({ error: error.message });
+            }
+        });
     },
     getAllCustomers: async (req, res) => {
         try {
@@ -93,10 +110,10 @@ const customerController = {
             }
             const JWT_SECRET = 'your_jwt_secret';
             const token = jwt.sign({ customerEmail }, JWT_SECRET, { expiresIn: '1h' });
-            res.status(200).json({ message: 'Login successful' , token });
+            res.status(200).json({ message: 'Login successful', token });
         } catch (error) {
-            res.status(500).json({ error: error.message , });
-        }   
+            res.status(500).json({ error: error.message, });
+        }
     },
 
     getProfile: async (req, res) => {
@@ -104,11 +121,13 @@ const customerController = {
         try {
             const customer = await Customer.getProfile(customerId);
             if ((customer)) {
-                res.render('theme/edit-user', { title: 'User Edit', customer: customer });
+                console.log(customer);
+                res.render('theme/edit-user', { title: 'User Edit', customer: customer[0][0], customerId });
             } else {
                 res.status(404).json({ message: "Customer not found" });
             }
         } catch (error) {
+            console.log(error);
             res.status(500).json({ error: error.message });
         }
     },
@@ -124,7 +143,7 @@ const customerController = {
             console.log(customerProfilePicture);
             try {
                 const result = await Customer.updateProfile(customerId, { customerName, customerEmail, customerPhone, customerAddress, customerZipCode, customerCity, customerCountry, customerProfilePicture });
-                res.status(200).json(result) // Redirect to all blogs after successful update
+                res.redirect('/customer') // Redirect to all blogs after successful update
             } catch (error) {
                 res.status(500).json({ error: error.message });
             }

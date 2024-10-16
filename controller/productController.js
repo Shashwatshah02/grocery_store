@@ -134,10 +134,10 @@ const productController = {
             res.status(500).json({ error: error.message });
         }
     },
-    getVariationById: async (req, res) => {
+    getVariationByProductId: async (req, res) => {
         try {
-            const variationId = req.params.id;
-            const variation = await Product.getVariationById(variationId);
+            const productId = req.params.id;
+            const variation = await Product.getVariationByProductId(productId);
             res.status(200).json(variation);
         } catch (error) {
             res.status(500).json({ error: error.message });
@@ -164,7 +164,7 @@ const productController = {
     getAllProductsAdmin: async (req, res) => {
         try {
             const products = await Product.getAllProducts();
-            res.status(200).json(products);
+            res.render("theme/product-list", { products });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }

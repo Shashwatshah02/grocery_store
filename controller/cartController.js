@@ -1,4 +1,5 @@
 const Cart = require('../models/cartModel');
+const jwt = require('jsonwebtoken');
 
 const cartController = {
     getCartById: async (req, res) => {

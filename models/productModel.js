@@ -2,17 +2,33 @@ const { db } = require("../db.js");
 
 
 const getAllProducts = async () => {
-    const [products] = await db.execute('SELECT * FROM product_details');
+    const [products] = await db.execute(`SELECT 
+    p.images,            -- Assuming this column holds the image data
+    p.title,
+    p.description,       
+    c.categoryName,      
+    p.stockAtPresent,    
+    p.unit,
+    v.weightOption,      -- Assuming this column holds the weight options
+    v.price               -- Assuming this column holds the price
+FROM 
+    product_details p
+JOIN 
+    categories c ON p.categoryId = c.categoryId
+JOIN 
+    variations v ON p.productId = v.productId;  -- Adjust the join condition based on your schema
+
+`);
     return products;
 }
 
-const createProducts = async ( title, description, images, categoryId, stockAtPresent, unit ) => {
+const createProducts = async (title, description, images, categoryId, stockAtPresent, unit) => {
     // Convert the images array to a JSON string
     const imagesString = JSON.stringify(images);
 
     console.log(title, description, imagesString, categoryId, stockAtPresent, unit);
     const [products] = await db.execute(
-        'INSERT INTO product_details (title, description, images, categoryId, stockAtPresent, unit) VALUES (?, ?, ?, ?, ?, ?)', 
+        'INSERT INTO product_details (title, description, images, categoryId, stockAtPresent, unit) VALUES (?, ?, ?, ?, ?, ?)',
         [title, description, imagesString, categoryId, stockAtPresent, unit]
     );
     return products;
@@ -28,7 +44,7 @@ const updateProduct = async (productId, updatedProduct) => {
         "UPDATE product_details SET title = ?, description = ?, images = ?, categoryId = ?, stockAtPresent = ?, unit = ? WHERE productId = ?",
         [title, description, imagesString, categoryId, stockAtPresent, unit, productId]
     );
-    
+
     return result;
 }
 
@@ -65,8 +81,8 @@ const updateVariation = async (variationId, updatedVariation) => {
     return result;
 }
 
-const getVariationById = async (variationId) => {
-    const [variation] = await db.execute('SELECT * FROM variations WHERE variationId = ?', [variationId]);
+const getVariationByProductId = async (productId) => {
+    const [variation] = await db.execute('SELECT * FROM variations WHERE productId = ?', [productId]);
     return variation;
 }
 
@@ -89,7 +105,7 @@ const productModel = {
     getAllVariations,
     createVariations,
     updateVariation,
-    getVariationById,
+    getVariationByProductId,
     deleteVariationById,
     getProductByCategoryId
 };

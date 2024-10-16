@@ -111,11 +111,11 @@ const productController = {
     createVariations: async (req, res) => {
         try {
             const { productId, weightOption, price } = req.body;
-            console.log( productId, weightOption, price );
+            console.log(productId, weightOption, price);
             if (productId === undefined || weightOption === undefined || price === undefined) {
                 return res.status(400).json({ error: 'All fields are required' });
             }
-            const variation = await Product.createVariations( productId, weightOption, price );
+            const variation = await Product.createVariations(productId, weightOption, price);
             console.log(variation);
             res.status(200).json(variation);
         } catch (error) {
@@ -148,6 +148,15 @@ const productController = {
             const variationId = req.params.id;
             const variation = await Product.deleteVariationById(variationId);
             res.status(200).json(variation);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    },
+    getProductByCategoryId: async (req, res) => {
+        try {
+            const categoryId = req.params.id;
+            const products = await Product.getProductByCategoryId(categoryId);
+            res.status(200).json(products);
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
@@ -229,11 +238,11 @@ const productController = {
     createVariationsAdmin: async (req, res) => {
         try {
             const { productId, weightOption, price } = req.body;
-            console.log( productId, weightOption, price );
+            console.log(productId, weightOption, price);
             if (productId === undefined || weightOption === undefined || price === undefined) {
                 return res.status(400).json({ error: 'All fields are required' });
             }
-            const variation = await Product.createVariations( productId, weightOption, price );
+            const variation = await Product.createVariations(productId, weightOption, price);
             console.log(variation);
             res.status(200).json(variation);
         } catch (error) {

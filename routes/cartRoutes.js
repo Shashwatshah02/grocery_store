@@ -5,9 +5,10 @@ const { verifyToken } = require("../middleware/jwt.js");
 
 const router = express.Router();
 
-// router.get("/", verifyToken, cartController.getCartById);
-// router.post("/", verifyToken, cartController.updateCartById);
-// router.get("/delete/:id", verifyToken, cartController.deleteCartByProductId);
+router.get("/", verifyToken, cartController.getCartById);
+router.post("/update", verifyToken, cartController.updateCartById);
+router.get("/delete/:id", verifyToken, cartController.deleteCartByProductId);
+router.post("/insert", verifyToken, cartController.createCartByProductId);
 
 
 module.exports = router;

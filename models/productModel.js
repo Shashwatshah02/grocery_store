@@ -75,6 +75,11 @@ const deleteVariationById = async (variationId) => {
     return result;
 }
 
+const getProductByCategoryId = async (categoryId) => {
+    const [products] = await db.execute('SELECT * FROM product_details WHERE categoryId = ?', [categoryId]);
+    return products;
+}
+
 const productModel = {
     getAllProducts,
     createProducts,
@@ -85,7 +90,8 @@ const productModel = {
     createVariations,
     updateVariation,
     getVariationById,
-    deleteVariationById
+    deleteVariationById,
+    getProductByCategoryId
 };
 
 module.exports = productModel;

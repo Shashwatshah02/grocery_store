@@ -96,7 +96,7 @@ const customerController = {
             }
 
             const token = generateToken(id);
-            res.status(200).json({ message: 'Login successful', token });
+            res.status(200).json({ message: 'Login successful', token, customer });
         } catch (error) {
             res.status(500).json({ error: error.message, });
         }
@@ -174,9 +174,10 @@ const customerController = {
         try {
             const customers = await Customer.getAllCustomers();
             const { customerEmail, customerPassword } = req.body;
-            // console.log(customerEmail)
+            console.log(customerEmail)
             const customer = customers.find((customer) => customer.customerEmail === customerEmail);
             const id = customer.customerId;
+            console.log(id)
             if (!customer) {
                 return res.status(404).json({ error: 'Customer not found' });
             }
@@ -233,28 +234,48 @@ const customerController = {
         try {
             const result = await Customer.deleteCustomer(customerId); // Assuming you have this method in your Blog model
             //   res.redirect("/api/blogs/all");
-            res.redirect("/customer");
+            res.redirect("/admin/customer");
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
     },
+
     createCompleteCustomerAdmin: async (req, res) => {
         upload(req, res, async (err) => {
             if (err) {
                 return res.status(400).json({ error: err });
             }
-            // console.log(req.file);
+
             const { customerName, customerPassword, customerEmail, customerPhone, customerAddress, customerZipCode, customerCity, customerCountry } = req.body;
             const customerProfilePicture = req.file ? req.file.path : null;
+
             console.log(req.body);
+
             try {
-                const result = await Customer.createCompleteCustomer({ customerName, customerPassword, customerEmail, customerPhone, customerAddress, customerZipCode, customerCity, customerCountry, customerProfilePicture });
-                res.redirect('/customer') // Redirect to all blogs after successful update
+                // Hash the password before storing it
+                const saltRounds = 10;
+                const hashedPassword = await bcrypt.hash(customerPassword, saltRounds);
+
+                // Create the customer record with the hashed password
+                const result = await Customer.createCompleteCustomer({
+                    customerName,
+                    customerPassword: hashedPassword,  // Store the hashed password
+                    customerEmail,
+                    customerPhone,
+                    customerAddress,
+                    customerZipCode,
+                    customerCity,
+                    customerCountry,
+                    customerProfilePicture
+                });
+
+                res.redirect('/admin/customer'); // Redirect to customer page after successful creation
             } catch (error) {
                 res.status(500).json({ error: error.message });
             }
         });
-    },
+    }
+
 
 }
 

@@ -5,8 +5,6 @@ const orderController = require("../controller/orderController.js");
 const productController = require("../controller/productController.js");
 const { db } = require('../db.js');
 
-
-const app = express();
 const router = express.Router();
 
 

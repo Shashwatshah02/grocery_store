@@ -56,7 +56,7 @@ const orderController = {
     getAllOrdersAdmin: async (req, res) => {
         try {
             const orders = await Order.getAllOrders();
-            res.status(200).json(orders);
+            res.render('theme/order-list', { orders });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }

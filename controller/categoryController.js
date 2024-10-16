@@ -73,7 +73,7 @@ const categoryController = {
     getAllCategoriesAdmin: async (req, res) => {
         try {
             const categories = await Category.getAllCategories();
-            res.status(200).json(categories);
+            res.render('theme/category-list', { categories });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
@@ -93,7 +93,7 @@ const categoryController = {
                 }
                 const result = await Category.addCategories(categoryName, categoryImage);
                 // res.status(201).json({ id: result.insertId, title, content, categoryId });
-                res.status(200).json(result);
+                res.redirect('/admin/categories');
             } catch (error) {
                 res.status(500).json({ error: error.message });
             }
@@ -103,7 +103,7 @@ const categoryController = {
         const categoryId = req.params.id;
         try {
             await Category.deleteCategoryById(categoryId); // Assuming you have this method in your Blog model
-            res.status(200).json({ message: "Category deleted successfully" });
+            res.redirect('/admin/categories');
         } catch (error) {
             res.status(500).json({ error: error.message });
         }

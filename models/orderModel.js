@@ -2,7 +2,20 @@ const { db } = require("../db.js");
 
 
 const getAllOrders = async () => {
-    const [orders] = await db.execute('SELECT * FROM orders');
+    const [orders] = await db.execute(`SELECT 
+        c.customerName,
+        o.orderId,
+        p.title,
+        o.orderDate,
+        o.orderStatus,
+        o.totalPrice
+FROM 
+    orders o
+JOIN 
+    customer_details c ON o.customerId = c.customerId
+JOIN 
+    product_details p ON o.productId = p.productId;
+    `);
     return orders;
 }
 

@@ -33,7 +33,10 @@ router.get('/product/variations/delete/:id', productController.deleteVariationBy
 
 // CATEGORY ROUTES
 router.get("/categories/", categoryController.getAllCategoriesAdmin);
-router.post("/categories/", categoryController.addCategoriesAdmin);
+router.post("/categories/create", categoryController.addCategoriesAdmin);
+router.get("/categories/create", (req, res) => {
+    res.render("theme/category-create", { title: "Create Category" });
+});
 router.get("/categories/delete/:id", categoryController.deleteCategorybyIdAdmin);
 
 
@@ -89,7 +92,7 @@ router.route("/login")
             if (user[0].password === password) {
                 req.session.isLoggedIn = true; // Set session variable
                 req.session.user = { username };
-                return res.render('theme/index', { title: 'Home Page' });
+                return res.redirect("/admin/customer"); // Redirect to admin page
 
             } else {
                 // Password is incorrect

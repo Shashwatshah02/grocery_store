@@ -59,14 +59,8 @@ app.get("/", (req, res) => {
 });
 
 app.post('/create-order', verifyToken, async (req, res) => {
-    const token = req.headers.authorization?.split(' ')[1]; // Example: 'Bearer <token>'
-    console.log(token);
-    if (!token) {
-        return res.status(401).json({ error: 'Unauthorized, no token provided' });
-    }
-
-    const decoded = jwt.verify(token, 'yourSecretKey');  // Replace 'your-secret-key' with your JWT secret
-    const customerId = decoded.customerId;
+    
+    const customerId = req.userId;
     console.log(customerId);
     const [cart] = await Cart.getCartById(customerId);
 
@@ -91,41 +85,53 @@ app.post('/create-order', verifyToken, async (req, res) => {
     }
 });
 
-app.post('/verify-payment', verifyToken, async (req, res) => {
-    const token = req.headers.authorization?.split(' ')[1]; // Example: 'Bearer <token>'
-    console.log(token);
-    if (!token) {
-        return res.status(401).json({ error: 'Unauthorized, no token provided' });
-    }
+app.post('/verify-payment', async (req, res) => {
+    try {
+        // Extract the token from the Authorization header
+        const token = req.headers.authorization?.split(' ')[1]; // Example: 'Bearer <token>'
+        console.log(token);
 
-    const decoded = jwt.verify(token, 'yourSecretKey');  // Replace 'your-secret-key' with your JWT secret
-    const customerId = decoded.customerId;
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, productId, totalPrice } = req.body;
+        if (!token) {
+            return res.status(401).json({ error: 'Unauthorized, no token provided' });
+        }
 
-    const crypto = require('crypto');
-    const hmac = crypto.createHmac('sha256', process.env.RAZORPAY_SECRET_KEY);
+        // Verify the JWT token
+        const decoded = jwt.verify(token, 'yourSecretKey');  // Replace 'yourSecretKey' with your actual secret
+        const customerId = decoded.customerId;
 
-    hmac.update(razorpay_order_id + '|' + razorpay_payment_id);
-    const generated_signature = hmac.digest('hex');
+        // Extract Razorpay payment details from request body
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
-    if (generated_signature === razorpay_signature) {
-        // Payment is valid, proceed with order fulfillment
-        const orderDate = new Date();  // Timestamp for the order date
-        const orderStatus = 'Confirmed';  // Initial order status
+        // Generate the expected signature using Razorpay's secret key
+        const hmac = crypto.createHmac('sha256', process.env.RAZORPAY_SECRET_KEY);
+        hmac.update(razorpay_order_id + '|' + razorpay_payment_id);
+        const generated_signature = hmac.digest('hex');
 
-        const insertOrderQuery = `
-        INSERT INTO orders (customerId, productId, orderDate, orderStatus, totalPrice) 
-        VALUES (?, ?, ?, ?, ?)
-      `;
+        // Verify the signature
+        if (generated_signature === razorpay_signature) {
+            // Payment is valid, proceed with order fulfillment
 
-        // Execute the query with values
-        await db.execute(insertOrderQuery, [customerId, productId, orderDate, orderStatus, totalPrice]);
+            const orderDate = new Date();  // Current timestamp for order date
+            const orderStatus = 'Confirmed';  // Initial status of the order
 
+            // SQL query to insert the new order into the orders table
+            const insertOrderQuery = `
+          INSERT INTO orders (customerId, productId, orderDate, orderStatus, totalPrice) 
+          VALUES (?, ?, ?, ?, ?)
+        `;
 
-        res.status(200).json({ success: true });
-    } else {
-        // Invalid payment, reject the request
-        res.status(400).json({ success: false });
+            // Execute the query with the provided values
+            await db.execute(insertOrderQuery, [customerId, productId, orderDate, orderStatus, totalPrice]);
+
+            // Send a success response
+            res.status(200).json({ success: true, message: 'Payment verified and order placed successfully' });
+        } else {
+            // Signature mismatch, payment verification failed
+            res.status(400).json({ success: false, message: 'Invalid payment signature' });
+        }
+    } catch (error) {
+        console.error('Error verifying payment:', error);
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 

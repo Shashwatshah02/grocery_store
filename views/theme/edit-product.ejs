@@ -287,95 +287,95 @@
                         <div class="col">
                           <div class="mb-3">
                             <label>Product name</label>
-                            <input class="form-control" type="text" name="productName" placeholder="Enter Product name" value="<%= product ? product.title : '' %>">
+                            <input class="form-control" type="text" name="productName" placeholder="Enter Product name"
+                              value="<%= product ? product.title : '' %>">
                           </div>
                         </div>
                         <div class="col mb-3">
                           <label>Category</label>
                           <select class="form-select" name="categoryId">
-                            <% categories.forEach(category => { %>
-                              <option value="<%= category.categoryId %>" <%= product && product.categoryId === category.categoryId ? 'selected' : '' %>><%= category.categoryName %></option>
-                            <% }) %>
+                            <% categories.forEach(category=> { %>
+                              <option value="<%= category.categoryId %>" <%=product &&
+                                product.categoryId===category.categoryId ? 'selected' : '' %>><%= category.categoryName
+                                  %>
+                              </option>
+                              <% }) %>
                           </select>
                         </div>
                       </div>
-        
+
                       <div class="row">
                         <div class="col">
                           <div class="mb-3">
                             <label>Stock At Present</label>
                             <select class="form-select" name="stockStatus">
-                              <option value="In Stock" <%= product && product.stockAtPresent > 0 ? 'selected' : '' %>>In Stock</option>
-                              <option value="Out of Stock" <%= product && product.stockAtPresent === 0 ? 'selected' : '' %>>Out of Stock</option>
+                              <option value="In Stock" <%=product && product.stockAtPresent> 0 ? 'selected' : '' %>>In
+                                Stock</option>
+                              <option value="Out of Stock" <%=product && product.stockAtPresent===0 ? 'selected' : '' %>
+                                >Out of Stock</option>
                             </select>
                           </div>
                         </div>
                         <div class="col">
                           <div class="mb-3">
-                            <!-- You can add more fields here if needed -->
+                            <label>Product Unit</label>
+                            <input class="form-control" type="text" name="unit" placeholder="Enter unit"
+                              value="<%= product ? product.unit : '' %>">
                           </div>
                         </div>
-                      </div>
-        
-                      <div class="row">
-                        <div class="col">
+
+
+                        <div class="row">
+                          <div class="col">
+                            <div class="mb-3">
+                              <label>Product Description</label>
+                              <textarea class="form-control" name="description"
+                                rows="3"><%= product ? product.description : '' %></textarea>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col">
+                            <div class="mb-3">
+                              <label>Product Weight</label>
+                              <input class="form-control mt-3" type="text" name="weightOption"
+                                value="<%= product ? product.weightOption : '' %>" placeholder="Enter weight">
+                            </div>
+
+                          </div>
                           <div class="mb-3">
-                            <label>Product Description</label>
-                            <textarea class="form-control" name="description" rows="3"><%= product ? product.description : '' %></textarea>
+                            <label>Product Price</label>
+                            <input class="form-control mt-3" type="text" name="price"
+                              value="<%= product ? product.price : '' %>" placeholder="Enter Price">
+                          </div>
+
+                        </div>
+
+                        <div class="row">
+                          <div class="col">
+                            <div class="mb-3">
+                              <label>Variable Images</label>
+                              <form class="dropzone" id="singleFileUpload" action="/upload" method="POST"
+                                enctype="multipart/form-data">
+                                <div class="dz-message needsclick"><i class="icon-cloud-up"></i>
+                                  <h6>Drop Images here or click to upload.</h6>
+                                </div>
+                                <!-- Ensure 'name' matches what multer expects in the backend ('images') -->
+                                <input type="file" name="images" class="form-control mt-3" multiple>
+                              </form>
+                            </div>
                           </div>
                         </div>
-                      </div>
-        
-                      <div class="row">
-                        <div class="col">
-                          <div class="mb-3">
-                            <label>Product Weight</label>
-                            <% if (product && product.variations.length > 0) { %>
-                              <% product.variations.forEach((variation, index) => { %>
-                                <input class="form-control mt-3" type="text" name="weightOptions[]" value="<%= variation.weightOptions %>">
-                              <% }) %>
-                            <% } else { %>
-                              <input class="form-control mt-3" type="text" name="weightOptions[]">
-                              <input class="form-control mt-3" type="text" name="weightOptions[]">
-                              <input class="form-control mt-3" type="text" name="weightOptions[]">
-                            <% } %>
+
+                        <div class="row">
+                          <div class="col">
+                            <div class="text-end">
+                              <button class="btn btn-secondary me-3" type="submit">Add</button>
+                              <a class="btn btn-danger" href="#">Cancel</a>
+                            </div>
                           </div>
                         </div>
-                        <div class="col mb-3">
-                          <label>Product Price</label>
-                          <% if (product && product.variations.length > 0) { %>
-                            <% product.variations.forEach((variation, index) => { %>
-                              <input class="form-control mt-3" type="text" name="price[]" value="<%= variation.price %>">
-                            <% }) %>
-                          <% } else { %>
-                            <input class="form-control mt-3" type="text" name="price[]">
-                            <input class="form-control mt-3" type="text" name="price[]">
-                            <input class="form-control mt-3" type="text" name="price[]">
-                          <% } %>
-                        </div>
-                      </div>
-        
-                      <div class="row">
-                        <div class="col">
-                          <div class="mb-3">
-                            <label>Variable Images</label>
-                            <form class="dropzone" id="singleFileUpload" action="/upload" method="POST" enctype="multipart/form-data">
-                              <div class="dz-message needsclick"><i class="icon-cloud-up"></i>
-                                <h6>Drop Images here or click to upload.</h6>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-        
-                      <div class="row">
-                        <div class="col">
-                          <div class="text-end">
-                            <button class="btn btn-secondary me-3" type="submit">Add</button>
-                            <a class="btn btn-danger" href="#">Cancel</a>
-                          </div>
-                        </div>
-                      </div>
                     </form>
                   </div>
                 </div>
@@ -383,7 +383,7 @@
             </div>
           </div>
         </div>
-        
+
         <!-- Container-fluid Ends-->
       </div>
       <!-- footer start-->

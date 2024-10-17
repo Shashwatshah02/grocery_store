@@ -1,4 +1,5 @@
 const Product = require("../models/productModel.js");
+const Category = require("../models/categoryModel.js");
 const multer = require("multer");
 const path = require("path");
 
@@ -213,9 +214,11 @@ const productController = {
         try {
             const productId = req.params.id;
             const product = await Product.getProductById(productId);
-            res.render('theme/edit-product', { title: 'Product Edit', product: product[0][0], productId });
+            const categories = await Category.getAllCategories();
+            console.log(product)
+            res.render('theme/edit-product', { title: 'Product Edit', product: product[0], productId, categories });
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: error.message }); 
         }
     },
     deleteProductByIdAdmin: async (req, res) => {

@@ -51,7 +51,21 @@ const updateProduct = async (productId, updatedProduct) => {
 
 
 const getProductById = async (productId) => {
-    const [product] = await db.execute('SELECT * FROM product_details WHERE productId = ?', [productId]);
+    const [product] = await db.execute(`
+        SELECT 
+            p.*,
+            c.categoryName,
+            v.weightOption,
+            v.price
+        FROM 
+            product_details p
+        LEFT JOIN 
+            categories c ON p.categoryId = c.categoryId
+        LEFT JOIN 
+            variations v ON p.productId = v.productId
+        WHERE 
+            p.productId = ?
+    `, [productId]);
     return product;
 }
 

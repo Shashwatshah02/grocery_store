@@ -20,7 +20,7 @@ const router = express.Router();
 
 // PRODUCT ROUTES
 router.get('/product/', productController.getAllProductsAdmin);
-router.post('/product/', productController.createProductsAdmin);
+router.post('/product/create', productController.createProductsAdmin);
 router.post('/product/update/:id', productController.updateProductAdmin);
 router.get('/product/edit/:id', productController.getProductByIdAdmin);
 router.get('/product/delete/:id', productController.deleteProductByIdAdmin);
@@ -29,6 +29,23 @@ router.post('/product/variations/', productController.createVariationsAdmin);
 router.post('/product/variations/update/:id', productController.updateVariationAdmin);
 router.get('/product/variations/update/:id', productController.getVariationByIdAdmin);
 router.get('/product/variations/delete/:id', productController.deleteVariationByIdAdmin);
+router.get("/product/create", async (req, res) => {
+    try {
+        // Call the getAllCategoriesAdmin function to get the categories
+        // const categories = await categoryController.getAllCategories();
+
+        // // Log the fetched categories to the console (for debugging purposes)
+        // console.log(categories);
+
+        // Render the product creation page with the fetched categories
+        res.render("theme/product-create", { title: "Create Product"});
+    } catch (error) {
+        // Log and handle any errors
+        console.error("Error fetching categories:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
 
 
 // CATEGORY ROUTES

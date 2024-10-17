@@ -213,7 +213,7 @@ const productController = {
         try {
             const productId = req.params.id;
             const product = await Product.getProductById(productId);
-            res.status(200).json(product);
+            res.render('theme/edit-product', { title: 'Product Edit', product: product[0][0], productId });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }

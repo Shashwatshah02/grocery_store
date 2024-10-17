@@ -5,6 +5,7 @@ const getAllProducts = async () => {
     const [products] = await db.execute(`SELECT 
     p.images,            -- Assuming this column holds the image data
     p.title,
+    p.productId,
     p.description,       
     c.categoryName,      
     p.stockAtPresent,    

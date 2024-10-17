@@ -22,7 +22,7 @@ const router = express.Router();
 router.get('/product/', productController.getAllProductsAdmin);
 router.post('/product/', productController.createProductsAdmin);
 router.post('/product/update/:id', productController.updateProductAdmin);
-router.get('/product/update/:id', productController.getProductByIdAdmin);
+router.get('/product/edit/:id', productController.getProductByIdAdmin);
 router.get('/product/delete/:id', productController.deleteProductByIdAdmin);
 router.get('/product/variations/', productController.getAllVariationsAdmin);
 router.post('/product/variations/', productController.createVariationsAdmin);

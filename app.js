@@ -70,7 +70,7 @@ app.post('/create-order', verifyToken, async (req, res) => {
     console.log(customerId);
     const [cart] = await Cart.getCartById(customerId);
 
-    console.log([cart]); 
+    console.log([cart]);
     if (!cart || cart.totalPrice === undefined) {
         return res.status(400).json({ error: 'No cart found or invalid total price' });
     }
@@ -91,23 +91,43 @@ app.post('/create-order', verifyToken, async (req, res) => {
     }
 });
 
-app.post('/verify-payment', (req, res) => {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
-  
+app.post('/verify-payment', verifyToken, async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1]; // Example: 'Bearer <token>'
+    console.log(token);
+    if (!token) {
+        return res.status(401).json({ error: 'Unauthorized, no token provided' });
+    }
+
+    const decoded = jwt.verify(token, 'yourSecretKey');  // Replace 'your-secret-key' with your JWT secret
+    const customerId = decoded.customerId;
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, productId, totalPrice } = req.body;
+
     const crypto = require('crypto');
     const hmac = crypto.createHmac('sha256', process.env.RAZORPAY_SECRET_KEY);
-  
+
     hmac.update(razorpay_order_id + '|' + razorpay_payment_id);
     const generated_signature = hmac.digest('hex');
-  
+
     if (generated_signature === razorpay_signature) {
-      // Payment is valid, proceed with order fulfillment
-      res.status(200).json({ success: true });
+        // Payment is valid, proceed with order fulfillment
+        const orderDate = new Date();  // Timestamp for the order date
+        const orderStatus = 'Confirmed';  // Initial order status
+
+        const insertOrderQuery = `
+        INSERT INTO orders (customerId, productId, orderDate, orderStatus, totalPrice) 
+        VALUES (?, ?, ?, ?, ?)
+      `;
+
+        // Execute the query with values
+        await db.execute(insertOrderQuery, [customerId, productId, orderDate, orderStatus, totalPrice]);
+
+
+        res.status(200).json({ success: true });
     } else {
-      // Invalid payment, reject the request
-      res.status(400).json({ success: false });
+        // Invalid payment, reject the request
+        res.status(400).json({ success: false });
     }
-  });
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

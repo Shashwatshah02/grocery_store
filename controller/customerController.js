@@ -81,8 +81,10 @@ const customerController = {
         try {
             const customers = await Customer.getAllCustomers();
             const { customerEmail, customerPassword } = req.body;
-            // console.log(customerEmail)
+            console.log(customerEmail)
+            console.log(customers)
             const customer = customers.find((customer) => customer.customerEmail === customerEmail);
+            console.log(customer)
             const id = customer.customerId;
             if (!customer) {
                 return res.status(404).json({ error: 'Customer not found' });

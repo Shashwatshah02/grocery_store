@@ -4,6 +4,14 @@ const jwt = require('jsonwebtoken');
 const cartController = {
     getCartById: async (req, res) => {
         try {
+            const authHeader = req.headers['authorization'];
+
+            if (!authHeader) {
+                return res.status(401).json({ error: "No token provided" });
+            }
+    
+            // The token is usually sent as 'Bearer <token>'
+            const token = authHeader.split(' ')[1];
             const decoded = jwt.verify(token, 'yourSecretKey');  // Replace 'your-secret-key' with your JWT secret
             const customerId = decoded.customerId;
             console.log(customerId);
@@ -15,6 +23,14 @@ const cartController = {
     },
     updateCartById: async (req, res) => {
         try {
+            const authHeader = req.headers['authorization'];
+
+            if (!authHeader) {
+                return res.status(401).json({ error: "No token provided" });
+            }
+    
+            // The token is usually sent as 'Bearer <token>'
+            const token = authHeader.split(' ')[1];
             const decoded = jwt.verify(token, 'yourSecretKey');  // Replace 'your-secret-key' with your JWT secret
             const customerId = decoded.customerId;
             const { productId, quantity } = req.body;
@@ -26,6 +42,14 @@ const cartController = {
     },
     deleteCartByProductId: async (req, res) => {
         try {
+            const authHeader = req.headers['authorization'];
+
+            if (!authHeader) {
+                return res.status(401).json({ error: "No token provided" });
+            }
+    
+            // The token is usually sent as 'Bearer <token>'
+            const token = authHeader.split(' ')[1];
             const decoded = jwt.verify(token, 'yourSecretKey');  // Replace 'your-secret-key' with your JWT secret
             const customerId = decoded.customerId;
             const { productId } = req.body;
@@ -37,9 +61,18 @@ const cartController = {
     },
     createCartByProductId: async (req, res) => {
         try {
+            const authHeader = req.headers['authorization'];
+
+            if (!authHeader) {
+                return res.status(401).json({ error: "No token provided" });
+            }
+    
+            // The token is usually sent as 'Bearer <token>'
+            const token = authHeader.split(' ')[1];
             const decoded = jwt.verify(token, 'yourSecretKey');  // Replace 'your-secret-key' with your JWT secret
             const customerId = decoded.customerId;
             const { productId, quantity } = req.body;
+            console.log(productId, quantity, customerId);
             const result = await Cart.createCartByProductId(customerId, productId, quantity);
             res.status(200).json(result);
         } catch (error) {

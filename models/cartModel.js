@@ -10,7 +10,7 @@ const getCartById = async (customerId) => {
             v.price,
             (c.quantity * v.price) AS totalPrice
         FROM cart c
-        JOIN products p ON c.productId = p.productId
+        JOIN product_details p ON c.productId = p.productId
         LEFT JOIN variations v ON p.productId = v.productId
         WHERE c.customerId = ?`,
         [customerId]

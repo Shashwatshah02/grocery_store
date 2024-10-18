@@ -16,10 +16,18 @@ const getCartById = async (customerId) => {
         WHERE c.customerId = ?`,
         [customerId]
     );
-    return result;
+
+    // Calculate the final total price from the result
+    const finalTotalPrice = result.reduce((acc, item) => acc + Number(item.totalPrice), 0);
+
+    return {
+        products: result,        // The array of product details
+        finalTotalPrice: finalTotalPrice // The final total price
+    };
 };
 
-const createCartByProductId = async (customerId, productId, quantity, variationId) => { 
+
+const createCartByProductId = async (customerId, productId, quantity, variationId) => {
     const [result] = await db.execute(
         "INSERT INTO cart (customerId, productId, quantity, variationId) VALUES (?, ?, ?, ?)",
         [customerId, productId, quantity, variationId]

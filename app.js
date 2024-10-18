@@ -57,33 +57,46 @@ app.use('/cart', cartRoutes);
 app.get("/", (req, res) => {
     res.send("Welcome to the Ecommerce Grocery Shopping");
 });
-
 app.post('/create-order', verifyToken, async (req, res) => {
-    
     const customerId = req.userId;
     console.log(customerId);
-    const [cart] = await Cart.getCartById(customerId);
 
-    console.log([cart]);
-    if (!cart || cart.totalPrice === undefined) {
-        return res.status(400).json({ error: 'No cart found or invalid total price' });
+    // Fetch the cart details
+    const { products, finalTotalPrice } = await Cart.getCartById(customerId);
+
+    // Check if the cart exists and has products
+    if (!products || products.length === 0) {
+        return res.status(400).json({ error: 'No cart found or it is empty' });
     }
 
-    const totalPrice = cart.totalPrice;
+    // Log the products and total price for debugging
+    console.log(products);
+    console.log(`Total Price: ${finalTotalPrice}`);
 
+    // Prepare the Razorpay order options
     const options = {
-        amount: totalPrice * 100, // amount in paise (1 INR = 100 paise)
+        amount: finalTotalPrice * 100, // amount in paise (1 INR = 100 paise)
         currency: 'INR',
         receipt: `receipt#${customerId}`,
+        notes: {
+            customerId: customerId,
+            products: products.map(product => ({
+                productId: product.productId,
+                quantity: product.quantity,
+                weightOption: product.weightOption
+            }))
+        }
     };
 
     try {
         const order = await razorpayInstance.orders.create(options);
         res.status(200).json(order);
     } catch (error) {
+        console.error('Error creating order:', error);
         res.status(500).json({ error: error.message });
     }
 });
+
 
 app.post('/verify-payment', async (req, res) => {
     try {

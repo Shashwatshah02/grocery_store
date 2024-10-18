@@ -48,12 +48,16 @@ const updateProduct = async (productId, updatedProduct) => {
 
 
 const getProductById = async (productId) => {
-    const [product] = await db.execute(`
+    const [productData] = await db.execute(`
         SELECT 
-            p.*,
+            p.productId,
+            p.title,
+            p.description,
+            p.stockAtPresent,
+            p.unit,
+            p.images,
             c.categoryName,
-            v.weightOption,
-            v.price
+            JSON_ARRAYAGG(JSON_OBJECT('weightOption', v.weightOption, 'price', v.price)) AS variations
         FROM 
             product_details p
         LEFT JOIN 
@@ -62,9 +66,21 @@ const getProductById = async (productId) => {
             variations v ON p.productId = v.productId
         WHERE 
             p.productId = ?
+        GROUP BY 
+            p.productId
     `, [productId]);
-    return product;
-}
+
+    // Check if productData exists and return the product with variations
+    if (productData.length > 0) {
+        return {
+            ...productData[0],
+            variations: JSON.parse(productData[0].variations) // Parse the JSON string to an object
+        };
+    } else {
+        return null; // Return null if no product found
+    }
+};
+
 
 const deleteProductById = async (productId) => {
     const [result] = await db.execute('DELETE FROM product_details WHERE productId = ?', [productId]);

@@ -32,7 +32,7 @@ router.get('/product/variations/delete/:id', productController.deleteVariationBy
 router.get("/product/create", async (req, res) => {
     try {
         // Call the getAllCategoriesAdmin function to get the categories
-        const categories = await categoryController.getAllCategories();
+        const categories = await categoryController.getProductCategories();
 
         // Log the fetched categories to the console (for debugging purposes)
         console.log(categories);

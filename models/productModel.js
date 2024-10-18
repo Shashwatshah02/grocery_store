@@ -48,7 +48,7 @@ const updateProduct = async (productId, updatedProduct) => {
 
 
 const getProductById = async (productId) => {
-    const [productData] = await db.execute(`
+    const [rows] = await db.execute(`
         SELECT 
             p.productId,
             p.title,
@@ -70,16 +70,24 @@ const getProductById = async (productId) => {
             p.productId
     `, [productId]);
 
-    // Check if productData exists and return the product with variations
-    if (productData.length > 0) {
+    if (rows && rows.length > 0) {
+        const product = rows[0];
+        console.log('Variations:', product.variations); // Check the value of variations
+
+        // Only parse if variations is a string
+        const variations = typeof product.variations === 'string' 
+            ? JSON.parse(product.variations) 
+            : product.variations;
+
         return {
-            ...productData[0],
-            variations: JSON.parse(productData[0].variations) // Parse the JSON string to an object
+            ...product,
+            variations
         };
     } else {
-        return null; // Return null if no product found
+        return null;
     }
 };
+
 
 
 const deleteProductById = async (productId) => {

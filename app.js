@@ -114,10 +114,7 @@ app.post('/verify-payment', async (req, res) => {
 
         // Extract Razorpay payment details from request body
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
-        const cartDetails = await Cart.getCartById(customerId); // Assuming this returns products and finalTotalPrice
-        const products = cartDetails.products; // Extract products
-        const finalTotalPrice = cartDetails.finalTotalPrice;
-        const productsJson = JSON.stringify(products);
+
 
         // Generate the expected signature using Razorpay's secret key
         const hmac = crypto.createHmac('sha256', process.env.RAZORPAY_SECRET_KEY);
@@ -127,7 +124,10 @@ app.post('/verify-payment', async (req, res) => {
         // Verify the signature
         if (generated_signature === razorpay_signature) {
             // Payment is valid, proceed with order fulfillment
-
+            const cartDetails = await Cart.getCartById(customerId); // Assuming this returns products and finalTotalPrice
+            const products = cartDetails.products; // Extract products
+            const finalTotalPrice = cartDetails.finalTotalPrice;
+            const productsJson = JSON.stringify(products);
             const orderDate = new Date();  // Current timestamp for order date
             const orderStatus = 'Confirmed';  // Initial status of the order
 

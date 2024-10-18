@@ -32,13 +32,13 @@ router.get('/product/variations/delete/:id', productController.deleteVariationBy
 router.get("/product/create", async (req, res) => {
     try {
         // Call the getAllCategoriesAdmin function to get the categories
-        // const categories = await categoryController.getAllCategories();
+        const categories = await categoryController.getAllCategories();
 
-        // // Log the fetched categories to the console (for debugging purposes)
-        // console.log(categories);
+        // Log the fetched categories to the console (for debugging purposes)
+        console.log(categories);
 
         // Render the product creation page with the fetched categories
-        res.render("theme/product-create", { title: "Create Product"});
+        res.render("theme/product-create", { title: "Create Product", categories});
     } catch (error) {
         // Log and handle any errors
         console.error("Error fetching categories:", error);

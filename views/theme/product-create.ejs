@@ -288,14 +288,17 @@
                         <div class="col">
                           <div class="mb-3">
                             <label>Product name</label>
-                            <input class="form-control" type="text" placeholder="Enter Product name">
+                            <input class="form-control" type="text" name="title" placeholder="Enter Product name">
                           </div>
                         </div>
                         <div class="col mb-3">
                           <label>Category</label>
-                          <select class="form-select">
-                            <option>Vegetable</option>
-                            <option>Beverages</option>
+                          <select class="form-select" name="categoryId">
+                            <% categories.forEach(function(category) { %>
+                              <option value="<%= category.id %>">
+                                <%= category.name %>
+                              </option>
+                              <% }) %>
                           </select>
                         </div>
                       </div>
@@ -304,49 +307,44 @@
                         <div class="col">
                           <div class="mb-3">
                             <label>Stock At Present</label>
-                            <input class="form-control" type="text" placeholder="Enter Available Stock">
+                            <input class="form-control" type="text" name="stockAtPresent"
+                              placeholder="Enter Available Stock">
                           </div>
                         </div>
                         <div class="col">
                           <div class="mb-3">
                             <label>Enter Unit</label>
-                            <input class="form-control" type="text" placeholder="Enter Unit">
+                            <input class="form-control" type="text" name="unit" placeholder="Enter Unit">
                           </div>
                         </div>
-
-
                       </div>
 
                       <div class="row">
                         <div class="col">
                           <div class="mb-3">
-                            <label>Product Discription</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea4" rows="3"></textarea>
+                            <label>Product Description</label>
+                            <textarea class="form-control" name="description" id="exampleFormControlTextarea4"
+                              rows="3"></textarea>
                           </div>
                         </div>
                       </div>
-
 
                       <div class="row">
                         <div class="col">
                           <div class="mb-3">
                             <label>Product Weight</label>
-                            <input class="form-control" type="text">
-                            <input class="form-control mt-3" type="text">
-                            <input class="form-control mt-3" type="text">
-
+                            <input class="form-control" type="text" name="weight1">
+                            <input class="form-control mt-3" type="text" name="weight2">
+                            <input class="form-control mt-3" type="text" name="weight3">
                           </div>
                         </div>
                         <div class="col mb-3">
                           <label>Product Price</label>
-                          <input class="form-control" type="text">
-                          <input class="form-control mt-3" type="text">
-                          <input class="form-control mt-3" type="text">
+                          <input class="form-control" type="text" name="price1">
+                          <input class="form-control mt-3" type="text" name="price2">
+                          <input class="form-control mt-3" type="text" name="price3">
                         </div>
                       </div>
-
-
-
 
                       <div class="row">
                         <div class="col">
@@ -356,7 +354,6 @@
                           </div>
                         </div>
                       </div>
-
 
                       <div class="row">
                         <div class="col">

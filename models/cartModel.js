@@ -3,7 +3,8 @@ const { db } = require("../db.js");
 const getCartById = async (customerId) => {
     const [result] = await db.execute(
         `SELECT 
-            c.quantity, 
+            c.quantity,
+            p.productId, 
             p.images, 
             p.title,  
             v.weightOption,

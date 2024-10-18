@@ -52,7 +52,9 @@ const cartController = {
             const token = authHeader.split(' ')[1];
             const decoded = jwt.verify(token, 'yourSecretKey');  // Replace 'your-secret-key' with your JWT secret
             const customerId = decoded.customerId;
-            const { productId } = req.body;
+            console.log(customerId);
+            const productId = req.params.id;
+            console.log(productId);
             const result = await Cart.deleteCartByProductId(customerId, productId);
             res.status(200).json(result);
         } catch (error) {

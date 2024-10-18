@@ -30,7 +30,7 @@ const upload = multer({
             cb("Error: Images Only!");
         }
     },
-}).array("images", 5); // Change to .array() to accept multiple images (up to 5 images)
+}).single("images"); // Change to .array() to accept multiple images (up to 5 images)
 
 
 
@@ -50,11 +50,11 @@ const productController = {
             }
             try {
                 const { title, description, categoryId, stockAtPresent, unit } = req.body;
-                // console.log(title, description, categoryId, stockAtPresent, unit)
+                console.log(title, description, categoryId, stockAtPresent, unit)
                 if (title === undefined || description === undefined || categoryId === undefined || stockAtPresent === undefined || unit === undefined) {
                     return res.status(400).json({ error: 'All fields are required' });
                 }
-                const images = req.files ? req.files.map(file => file.path) : null;
+                const images = req.file ? req.file.path : null;
                 // console.log(images);
                 const product = await Product.createProducts(title, description, images, categoryId, stockAtPresent, unit);
                 console.log(product);
@@ -177,7 +177,7 @@ const productController = {
             }
             try {
                 const { title, description, categoryId, stockAtPresent, unit } = req.body;
-                // console.log(title, description, categoryId, stockAtPresent, unit)
+                console.log(title, description, categoryId, stockAtPresent, unit)
                 if (title === undefined || description === undefined || categoryId === undefined || stockAtPresent === undefined || unit === undefined) {
                     return res.status(400).json({ error: 'All fields are required' });
                 }

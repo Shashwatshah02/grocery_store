@@ -114,6 +114,10 @@ app.post('/verify-payment', async (req, res) => {
 
         // Extract Razorpay payment details from request body
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+        const cartDetails = await Cart.getCartById(customerId); // Assuming this returns products and finalTotalPrice
+        const products = cartDetails.products; // Extract products
+        const finalTotalPrice = cartDetails.finalTotalPrice;
+        const productsJson = JSON.stringify(products);
 
         // Generate the expected signature using Razorpay's secret key
         const hmac = crypto.createHmac('sha256', process.env.RAZORPAY_SECRET_KEY);
@@ -129,12 +133,12 @@ app.post('/verify-payment', async (req, res) => {
 
             // SQL query to insert the new order into the orders table
             const insertOrderQuery = `
-          INSERT INTO orders (customerId, productId, orderDate, orderStatus, totalPrice) 
-          VALUES (?, ?, ?, ?, ?)
+            INSERT INTO orders (customerId, products, orderDate, orderStatus, totalPrice) 
+            VALUES (?, ?, ?, ?, ?)
         `;
 
-            // Execute the query with the provided values
-            await db.execute(insertOrderQuery, [customerId, productId, orderDate, orderStatus, totalPrice]);
+            // 9. Execute the query with the provided values
+            await db.execute(insertOrderQuery, [customerId, productsJson, orderDate, orderStatus, finalTotalPrice]);
 
             // Send a success response
             res.status(200).json({ success: true, message: 'Payment verified and order placed successfully' });

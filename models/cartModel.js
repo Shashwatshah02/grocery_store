@@ -19,10 +19,10 @@ const getCartById = async (customerId) => {
     return result;
 };
 
-const createCartByProductId = async (customerId, productId, quantity) => { 
+const createCartByProductId = async (customerId, productId, quantity, variationId) => { 
     const [result] = await db.execute(
-        "INSERT INTO cart (customerId, productId, quantity) VALUES (?, ?, ?)",
-        [customerId, productId, quantity]
+        "INSERT INTO cart (customerId, productId, quantity, variationId) VALUES (?, ?, ?, ?)",
+        [customerId, productId, quantity, variationId]
     );
     return result;
 }

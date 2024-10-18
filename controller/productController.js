@@ -247,7 +247,7 @@ const productController = {
         try {
             const productId = req.params.id;
             const product = await Product.deleteProductById(productId);
-            res.status(200).json(product);
+            res.redirect('/admin/product');
         } catch (error) {
             res.status(500).json({ error: error.message });
         }

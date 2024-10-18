@@ -73,9 +73,9 @@ const cartController = {
             const token = authHeader.split(' ')[1];
             const decoded = jwt.verify(token, 'yourSecretKey');  // Replace 'your-secret-key' with your JWT secret
             const customerId = decoded.customerId;
-            const { productId, quantity } = req.body;
+            const { productId, quantity, variationId } = req.body;
             console.log(productId, quantity, customerId);
-            const result = await Cart.createCartByProductId(customerId, productId, quantity);
+            const result = await Cart.createCartByProductId(customerId, productId, quantity, variationId);
             res.status(200).json(result);
         } catch (error) {
             res.status(500).json({ error: error.message });

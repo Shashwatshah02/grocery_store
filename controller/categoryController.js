@@ -35,7 +35,7 @@ const categoryController = {
     getAllCategories: async (req, res) => {
         try {
             const categories = await Category.getAllCategories();
-            res.status(200).json(categories);
+            return categories;
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
@@ -108,7 +108,7 @@ const categoryController = {
             res.status(500).json({ error: error.message });
         }
     },
-    
+
 }
 
 module.exports = categoryController;

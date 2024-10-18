@@ -72,7 +72,7 @@ const productController = {
             try {
                 const productId = req.params.id;
                 const updatedProduct = req.body;
-                const images = req.files ? req.files.map(file => file.path) : null;
+                const images = req.file ? req.file.path : null;
                 updatedProduct.images = images;
                 console.log(productId, updatedProduct);
                 const product = await Product.updateProduct(productId, updatedProduct);
@@ -181,11 +181,33 @@ const productController = {
                 if (title === undefined || description === undefined || categoryId === undefined || stockAtPresent === undefined || unit === undefined) {
                     return res.status(400).json({ error: 'All fields are required' });
                 }
-                const images = req.files ? req.files.map(file => file.path) : null;
-                // console.log(images);
+                const images = req.file ? req.file.path : null;
+                console.log(images);
                 const product = await Product.createProducts(title, description, images, categoryId, stockAtPresent, unit);
                 console.log(product);
-                res.status(200).json(product);
+                const productId = product.insertId; // Assuming this is where you get the insertId
+
+                console.log("Inserted Product ID:", productId);
+                req.body.weightOptions = ['value1', 'value2', 'value3'];
+                req.body.prices = ['price1', 'price2', 'price3'];
+                const weightOptions = req.body.weightOptions;
+                const prices = req.body.prices;
+                console.log(weightOptions, prices);
+                // Check if weightOptions and prices are arrays (in case multiple variations are submitted)
+                if (Array.isArray(weightOptions) && Array.isArray(prices) && weightOptions.length === prices.length) {
+                    // Iterate over the weightOptions and prices and insert each variation
+                    for (let i = 0; i < weightOptions.length; i++) {
+                        const weightOption = weightOptions[i];
+                        const price = prices[i];
+
+                        // Insert each variation into the variations table
+                        await Product.createVariations(productId, weightOption, price)
+
+                        console.log(`Inserted variation: Product ID ${productId}, Weight: ${weightOption}, Price: ${price}`);
+                    }
+                }
+
+                res.redirect('/admin/product');
             } catch (error) {
                 res.status(500).json({ error: error.message });
             }
@@ -218,7 +240,7 @@ const productController = {
             console.log(product)
             res.render('theme/edit-product', { title: 'Product Edit', product: product[0], productId, categories });
         } catch (error) {
-            res.status(500).json({ error: error.message }); 
+            res.status(500).json({ error: error.message });
         }
     },
     deleteProductByIdAdmin: async (req, res) => {

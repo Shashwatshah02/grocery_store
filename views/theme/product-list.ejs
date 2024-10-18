@@ -153,8 +153,7 @@
             <li class="onhover-dropdown"><i data-feather="message-square"></i>
               <ul class="chat-dropdown onhover-show-div">
                 <li>
-                  <div class="media"><img class="img-fluid rounded-circle me-3" src="/assets/images/user/4.jpg"
-                      alt="">
+                  <div class="media"><img class="img-fluid rounded-circle me-3" src="/assets/images/user/4.jpg" alt="">
                     <div class="media-body"><span>Ain Chavez</span>
                       <p class="f-12 light-font">Lorem Ipsum is simply dummy...</p>
                     </div>
@@ -162,8 +161,7 @@
                   </div>
                 </li>
                 <li>
-                  <div class="media"><img class="img-fluid rounded-circle me-3" src="/assets/images/user/1.jpg"
-                      alt="">
+                  <div class="media"><img class="img-fluid rounded-circle me-3" src="/assets/images/user/1.jpg" alt="">
                     <div class="media-body"><span>Erica Hughes</span>
                       <p class="f-12 light-font">Lorem Ipsum is simply dummy...</p>
                     </div>
@@ -171,8 +169,7 @@
                   </div>
                 </li>
                 <li>
-                  <div class="media"><img class="img-fluid rounded-circle me-3" src="/assets/images/user/2.jpg"
-                      alt="">
+                  <div class="media"><img class="img-fluid rounded-circle me-3" src="/assets/images/user/2.jpg" alt="">
                     <div class="media-body"><span>Kori Thomas</span>
                       <p class="f-12 light-font">Lorem Ipsum is simply dummy...</p>
                     </div>
@@ -347,30 +344,34 @@
                               <%= product.unit %>
                             </td>
                             <td>
-                              <% if (product.variations && product.variations.length> 0) { %>
+                              <% if (product.weightOptions && product.weightOptions.trim().length> 0) { %>
                                 <ul>
-                                  <% product.variations.forEach(variation=> { %>
-                                    <li>
-                                      <%= variation.weightOptions %>
-                                    </li>
-                                    <% }) %>
+                                  <% let weightArray=product.weightOptions.split(','); %>
+                                    <% weightArray.forEach(weight=> { %>
+                                      <li>
+                                        <%= weight %>
+                                      </li>
+                                      <% }) %>
                                 </ul>
                                 <% } else { %>
                                   <span>No Weight Options</span>
                                   <% } %>
                             </td>
+
                             <td>
-                              <% if (product.variations && product.variations.length> 0) { %>
+                              <% if (product.prices && product.prices.trim().length> 0) { %>
                                 <ul>
-                                  <% product.variations.forEach(variation=> { %>
-                                    <li>Rs. <%= variation.price %>
-                                    </li>
-                                    <% }) %>
+                                  <% let priceArray=product.prices.split(','); %>
+                                    <% priceArray.forEach(price=> { %>
+                                      <li>Rs. <%= price %>
+                                      </li>
+                                      <% }) %>
                                 </ul>
                                 <% } else { %>
                                   <span>No Price Available</span>
                                   <% } %>
                             </td>
+
                             <td>
                               <form action="/admin/product/delete/<%= product.productId %>" method="DELETE"
                                 style="display: inline;" onsubmit="return confirmDelete();">

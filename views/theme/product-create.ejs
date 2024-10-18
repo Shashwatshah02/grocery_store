@@ -295,8 +295,8 @@
                           <label>Category</label>
                           <select class="form-select" name="categoryId">
                             <% categories.forEach(function(category) { %>
-                              <option value="<%= category.id %>">
-                                <%= category.name %>
+                              <option value="<%= category.categoryId %>">
+                                <%= category.categoryName %>
                               </option>
                               <% }) %>
                           </select>
@@ -333,17 +333,20 @@
                         <div class="col">
                           <div class="mb-3">
                             <label>Product Weight</label>
-                            <input class="form-control" type="text" name="weight1">
-                            <input class="form-control mt-3" type="text" name="weight2">
-                            <input class="form-control mt-3" type="text" name="weight3">
+                            <input class="form-control" type="text" name="weightOptions[]" placeholder="Enter Weight 1">
+                            <input class="form-control mt-3" type="text" name="weightOptions[]"
+                              placeholder="Enter Weight 2">
+                            <input class="form-control mt-3" type="text" name="weightOptions[]"
+                              placeholder="Enter Weight 3">
                           </div>
                         </div>
                         <div class="col mb-3">
                           <label>Product Price</label>
-                          <input class="form-control" type="text" name="price1">
-                          <input class="form-control mt-3" type="text" name="price2">
-                          <input class="form-control mt-3" type="text" name="price3">
+                          <input class="form-control" type="text" name="prices[]" placeholder="Enter Price 1">
+                          <input class="form-control mt-3" type="text" name="prices[]" placeholder="Enter Price 2">
+                          <input class="form-control mt-3" type="text" name="prices[]" placeholder="Enter Price 3">
                         </div>
+
                       </div>
 
                       <div class="row">

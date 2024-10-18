@@ -3,22 +3,23 @@ const { db } = require("../db.js");
 
 const getAllProducts = async () => {
     const [products] = await db.execute(`SELECT 
-    p.images,            -- Assuming this column holds the image data
-    p.title,
-    p.productId,
-    p.description,       
-    c.categoryName,      
-    p.stockAtPresent,    
-    p.unit,
-    v.weightOption,      -- Assuming this column holds the weight options
-    v.price               -- Assuming this column holds the price
+    p.images,                                -- Product image
+    p.title,                                 -- Product title
+    p.productId,                             -- Product ID
+    p.description,                           -- Product description
+    c.categoryName,                          -- Category name
+    p.stockAtPresent,                        -- Stock available
+    p.unit,                                  -- Unit of measurement
+    GROUP_CONCAT(v.weightOption ORDER BY v.weightOption) AS weightOptions,  -- Aggregate weight options
+    GROUP_CONCAT(v.price ORDER BY v.price) AS prices                        -- Aggregate prices
 FROM 
     product_details p
 JOIN 
     categories c ON p.categoryId = c.categoryId
-JOIN 
-    variations v ON p.productId = v.productId;  -- Adjust the join condition based on your schema
-
+LEFT JOIN 
+    variations v ON p.productId = v.productId
+GROUP BY 
+    p.productId, p.images, p.title, p.description, c.categoryName, p.stockAtPresent, p.unit;
 `);
     return products;
 }

@@ -188,8 +188,6 @@ const productController = {
                 const productId = product.insertId; // Assuming this is where you get the insertId
 
                 console.log("Inserted Product ID:", productId);
-                req.body.weightOptions = ['value1', 'value2', 'value3'];
-                req.body.prices = ['price1', 'price2', 'price3'];
                 const weightOptions = req.body.weightOptions;
                 const prices = req.body.prices;
                 console.log(weightOptions, prices);

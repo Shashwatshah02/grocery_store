@@ -125,7 +125,8 @@ app.post('/verify-payment', async (req, res) => {
         // Verify the signature
         if (generated_signature === razorpay_signature) {
             // Payment is valid, proceed with order fulfillment
-            const cartDetails = await Cart.getCartById(customerId); // Assuming this returns products and finalTotalPrice
+            const cartDetails = await Cart.getCartById(customerId);
+            console.log(cartDetails) // Assuming this returns products and finalTotalPrice
             const products = cartDetails.products; // Extract products
             const finalTotalPrice = cartDetails.finalTotalPrice;
             const productsJson = JSON.stringify(products);
@@ -142,7 +143,7 @@ app.post('/verify-payment', async (req, res) => {
             await db.execute(insertOrderQuery, [customerId, productsJson, orderDate, orderStatus, finalTotalPrice]);
 
             // Send a success response
-            res.status(200).json({ success: true, message: 'Payment verified and order placed successfully' });
+            res.redirect('/admin/orders');
         } else {
             // Signature mismatch, payment verification failed
             res.status(400).json({ success: false, message: 'Invalid payment signature' });

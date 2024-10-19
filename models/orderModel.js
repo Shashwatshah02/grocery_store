@@ -2,22 +2,30 @@ const { db } = require("../db.js");
 
 
 const getAllOrders = async () => {
-    const [orders] = await db.execute(`SELECT 
-        c.customerName,
-        o.orderId,
-        p.title,
-        o.orderDate,
-        o.orderStatus,
-        o.totalPrice
-FROM 
-    orders o
-JOIN 
-    customer_details c ON o.customerId = c.customerId
-JOIN 
-    product_details p ON o.productId = p.productId;
+    const [orders] = await db.execute(`
+        SELECT 
+            c.customerName,
+            o.orderId,
+            o.orderDate,
+            o.orderStatus,
+            o.totalPrice,
+            o.products  -- Assuming you're storing product details in this column
+        FROM 
+            orders o
+        JOIN 
+            customer_details c ON o.customerId = c.customerId
     `);
+    
+    // You might want to parse the products JSON if needed
+    orders.forEach(order => {
+        if (order.products) {
+            order.products = JSON.parse(order.products); // Parsing JSON if stored as a string
+        }
+    });
+    
     return orders;
-}
+};
+
 
 const createOrders = async (customerId, productId, orderStatus, totalPrice) => {
     const [result] = await db.execute('INSERT INTO orders (customerId, productId, orderStatus, totalPrice) VALUES (?, ?, ?, ?)', [customerId, productId, orderStatus, totalPrice]);

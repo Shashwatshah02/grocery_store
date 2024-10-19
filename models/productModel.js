@@ -108,13 +108,20 @@ const createVariations = async (productId, weightOption, price) => {
     return variations;
 }
 
-const updateVariation = async (variationId, updatedVariation) => {
-    const { weightOption, price } = updatedVariation;
-    const [result] = await db.execute(
-        "UPDATE variations SET weightOption = ?, price = ? WHERE variationId = ?",
-        [weightOption, price, variationId]
-    );
-    return result;
+const updateVariations = async (productId, variations) => {
+    // First, delete existing variations
+    await db.execute("DELETE FROM variations WHERE productId = ?", [productId]);
+
+    // Then, insert the updated variations
+    const variationQueries = variations.map(variation => (  
+        db.execute(
+            "INSERT INTO variations (productId, weightOption, price) VALUES (?, ?, ?)",
+            [productId, variation.weightOption, variation.price]
+        )
+    ));
+
+    // Execute all queries
+    await Promise.all(variationQueries);
 }
 
 const getVariationByProductId = async (productId) => {
@@ -140,7 +147,7 @@ const productModel = {
     deleteProductById,
     getAllVariations,
     createVariations,
-    updateVariation,
+    updateVariations,
     getVariationByProductId,
     deleteVariationById,
     getProductByCategoryId

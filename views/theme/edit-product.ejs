@@ -282,12 +282,12 @@
               <div class="card">
                 <div class="card-body">
                   <div class="form theme-form">
-                    <form action="/add-product" method="POST" enctype="multipart/form-data">
+                    <form action="/admin/product/update/<%= productId %>" method="POST" enctype="multipart/form-data">
                       <div class="row">
                         <div class="col">
                           <div class="mb-3">
                             <label>Product name</label>
-                            <input class="form-control" type="text" name="productName" placeholder="Enter Product name"
+                            <input class="form-control" type="text" name="title" placeholder="Enter Product name"
                               value="<%= product ? product.title : '' %>">
                           </div>
                         </div>
@@ -308,12 +308,8 @@
                         <div class="col">
                           <div class="mb-3">
                             <label>Stock At Present</label>
-                            <select class="form-select" name="stockStatus">
-                              <option value="In Stock" <%=product && product.stockAtPresent> 0 ? 'selected' : '' %>>In
-                                Stock</option>
-                              <option value="Out of Stock" <%=product && product.stockAtPresent===0 ? 'selected' : '' %>
-                                >Out of Stock</option>
-                            </select>
+                            <input class="form-control" type="text" name="stockAtPresent"
+                              placeholder="Enter Available Stock" value="<%= product ? product.stockAtPresent : '' %>">
                           </div>
                         </div>
                         <div class="col">
@@ -335,35 +331,38 @@
                           </div>
                         </div>
 
-                        <div class="row">
-                          <div class="col">
-                            <div class="mb-3">
-                              <label>Product Weight</label>
-                              <input class="form-control mt-3" type="text" name="weightOption"
-                                value="<%= product ? product.weightOption : '' %>" placeholder="Enter weight">
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label>Product Weight</label>
+                                <!-- Dynamically render the weight inputs based on the variations array -->
+                                <% product.variations.forEach((variation, index)=> { %>
+                                  <input class="form-control mt-3" type="text" name="weightOptions[]"
+                                    value="<%= variation.weightOption %>" placeholder="Enter Weight <%= index + 1 %>">
+                                  <% }); %>
+                              </div>
                             </div>
 
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label>Product Price</label>
+                                <!-- Dynamically render the price inputs based on the variations array -->
+                                <% product.variations.forEach((variation, index)=> { %>
+                                  <input class="form-control mt-3" type="text" name="prices[]"
+                                    value="<%= variation.price %>" placeholder="Enter Price <%= index + 1 %>">
+                                  <% }); %>
+                              </div>
+                            </div>
                           </div>
-                          <div class="mb-3">
-                            <label>Product Price</label>
-                            <input class="form-control mt-3" type="text" name="price"
-                              value="<%= product ? product.price : '' %>" placeholder="Enter Price">
-                          </div>
-
                         </div>
+
 
                         <div class="row">
                           <div class="col">
                             <div class="mb-3">
-                              <label>Variable Images</label>
-                              <form class="dropzone" id="singleFileUpload" action="/upload" method="POST"
-                                enctype="multipart/form-data">
-                                <div class="dz-message needsclick"><i class="icon-cloud-up"></i>
-                                  <h6>Drop Images here or click to upload.</h6>
-                                </div>
-                                <!-- Ensure 'name' matches what multer expects in the backend ('images') -->
-                                <input type="file" name="images" class="form-control mt-3" multiple>
-                              </form>
+                              <label>Upload Image</label>
+                              <input class="form-control" type="file" name="images" accept="image/*">
                             </div>
                           </div>
                         </div>

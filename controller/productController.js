@@ -87,7 +87,7 @@ const productController = {
         try {
             const productId = req.params.id;
             const product = await Product.getProductById(productId);
-            console.log(product)    
+            console.log(product)
             res.status(200).json(product);
         } catch (error) {
             res.status(500).json({ error: error.message });
@@ -219,25 +219,43 @@ const productController = {
             }
             try {
                 const productId = req.params.id;
-                const updatedProduct = req.body;
-                const images = req.files ? req.files.map(file => file.path) : null;
-                updatedProduct.images = images;
-                console.log(productId, updatedProduct);
-                const product = await Product.updateProduct(productId, updatedProduct);
-                console.log(product);
-                res.status(200).json(product);
+                const {title, description, stockAtPresent, unit, categoryId} = req.body;
+                const images = req.file ? req.file.path : null;
+                
+                console.log(productId, title, description, stockAtPresent, unit, categoryId, images);
+
+                // Extract weight options and prices
+                const { weightOptions, prices } = req.body;
+                console.log(weightOptions, prices);
+
+                // Update the main product details
+                await Product.updateProduct(productId, {title, description, stockAtPresent, unit, categoryId, images});
+
+                // Handle product variations
+                if (weightOptions && prices) {
+                    const variations = weightOptions.map((weight, index) => ({
+                        weightOption: weight,
+                        price: prices[index]
+                    }));
+                    await Product.updateVariations(productId, variations);
+                }
+
+                // Respond with the updated product
+                const updatedProductData = await Product.getProductById(productId);
+                res.redirect('/admin/product');
             } catch (error) {
                 res.status(500).json({ error: error.message });
             }
         });
     },
+
     getProductByIdAdmin: async (req, res) => {
         try {
             const productId = req.params.id;
             const product = await Product.getProductById(productId);
             const categories = await Category.getAllCategories();
             console.log(product)
-            res.render('theme/edit-product', { title: 'Product Edit', product: product[0], productId, categories });
+            res.render('theme/edit-product', { title: 'Product Edit', product: product, productId, categories });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }

@@ -143,7 +143,7 @@ app.post('/verify-payment', async (req, res) => {
             await db.execute(insertOrderQuery, [customerId, productsJson, orderDate, orderStatus, finalTotalPrice]);
 
             // Send a success response
-            res.redirect('/admin/orders');
+            res.redirect('/admin/order');
         } else {
             // Signature mismatch, payment verification failed
             res.status(400).json({ success: false, message: 'Invalid payment signature' });

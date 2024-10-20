@@ -328,11 +328,11 @@
                               <td>#<%= order.orderId %>
                               </td>
                               <td>
-                                <% order.products.forEach(product => { %>
+                                <% order.products.forEach(product=> { %>
                                   <li>
-                                      <%= product.title %>
+                                    <%= product.title %>
                                   </li>
-                              <% }) %>
+                                  <% }) %>
                               </td>
                               <td>
                                 <%= new Date(order.orderDate).toLocaleDateString() %>

@@ -37,10 +37,33 @@ const updateOrder = async (customerId, productId, orderStatus, totalPrice) => {
     return result;
 }
 
-const getOrderById = async (orderId) => {
-    const [order] = await db.execute('SELECT * FROM orders WHERE orderId = ?', [orderId]);
-    return order;
-}
+const getOrderByCustomerId = async (customerId) => {
+    const [orders] = await db.execute(`
+        SELECT 
+            c.customerName,
+            o.orderId,
+            o.orderDate,
+            o.orderStatus,
+            o.totalPrice,
+            o.products  -- Assuming you're storing product details in this column
+        FROM 
+            orders o
+        JOIN 
+            customer_details c ON o.customerId = c.customerId
+        WHERE 
+            o.customerId = ?
+    `, [customerId]);  // Using parameterized queries to prevent SQL injection
+    
+    // Parsing the products JSON if needed
+    orders.forEach(order => {
+        if (order.products) {
+            order.products = JSON.parse(order.products); // Parsing JSON if stored as a string
+        }
+    });
+    
+    return orders;
+};
+
 
 const deleteOrderById = async (orderId) => {
     const [result] = await db.execute('DELETE FROM orders WHERE orderId = ?', [orderId]);
@@ -51,7 +74,7 @@ const orderModel = {
     getAllOrders,
     createOrders,
     updateOrder,
-    getOrderById,
+    getOrderByCustomerId,
     deleteOrderById,
 };
 

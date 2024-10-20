@@ -142,6 +142,9 @@ app.post('/verify-payment', async (req, res) => {
             // 9. Execute the query with the provided values
             await db.execute(insertOrderQuery, [customerId, productsJson, orderDate, orderStatus, finalTotalPrice]);
 
+            // Clear the cart after successful order placement
+            const clearCartQuery = `DELETE FROM cart WHERE customerId = ?`;
+            await db.execute(clearCartQuery, [customerId]);
             // Send a success response
             res.redirect('/admin/order');
         } else {

@@ -35,10 +35,11 @@ const orderController = {
             res.status(500).json({ error: error.message });
         }
     },
-    getOrderById: async (req, res) => {
+    getOrderByCustomerId: async (req, res) => {
         try {
-            const { id } = req.params;
-            const order = await Order.getOrderById(id);
+            const customerId = req.userId;
+            console.log(customerId);
+            const order = await Order.getOrderByCustomerId(customerId);
             res.status(200).json(order);
         } catch (error) {
             res.status(500).json({ error: error.message });

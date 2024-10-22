@@ -60,6 +60,9 @@ app.get("/", (req, res) => {
 });
 app.post('/create-order', verifyToken, async (req, res) => {
     const customerId = req.userId;
+    if(!customerId) {
+        return res.status(400).json({ error: 'Invalid customer ID' });
+    }
     console.log(customerId);
 
     // Fetch the cart details
@@ -99,23 +102,20 @@ app.post('/create-order', verifyToken, async (req, res) => {
 });
 
 
-app.post('/verify-payment', async (req, res) => {
+app.post('/verify-payment', verifyToken, async (req, res) => {
     // try {
         // Extract the token from the Authorization header
-        const token = req.headers.authorization?.split(' ')[1]; // Example: 'Bearer <token>'
-        console.log(token);
-
-        if (!token) {
-            return res.status(401).json({ error: 'Unauthorized, no token provided' });
+        const customerId = req.userId;
+        if(!customerId) {
+            return res.status(400).json({ error: 'Invalid customer ID' });
         }
-
-        // Verify the JWT token
-        const decoded = jwt.verify(token, 'yourSecretKey');  // Replace 'yourSecretKey' with your actual secret
-        const customerId = decoded.customerId;
 
         // Extract Razorpay payment details from request body
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
-
+        
+        if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+            return res.status(400).json({ error: 'Missing payment details' });
+        }
 
         // Generate the expected signature using Razorpay's secret key
         const hmac = crypto.createHmac('sha256', process.env.RAZORPAY_SECRET_KEY);

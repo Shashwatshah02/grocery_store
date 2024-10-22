@@ -13,6 +13,11 @@ const getAllCustomers = async () => {
     const [customers] = await db.execute('SELECT * FROM customer_details');
     return customers;
 }
+
+const getCustomerByEmail = async (customerEmail) => {
+    const [customer] = await db.execute('SELECT * FROM customer_details WHERE customerEmail = ?', [customerEmail])
+    return customer
+}
 const forgotPassword = async (customerEmail, hashedPassword) => {
     if (!customerEmail || !hashedPassword) {
         throw new Error("All fields are required");
@@ -68,7 +73,8 @@ const customerModel = {
     getProfile,
     updateProfile,
     deleteCustomer,
-    createCompleteCustomer
+    createCompleteCustomer,
+    getCustomerByEmail
 };
 
 module.exports = customerModel;

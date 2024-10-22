@@ -108,7 +108,7 @@ const customerController = {
         }
 
         const token = generateToken(id);
-        res.status(200).json({ message: 'Login successful', token, customer });
+        res.status(200).json({ message: 'Login successful', token, customer: customer[0] });
         // } catch (error) {
         //     res.status(500).json({ error: error.message, });
         // }

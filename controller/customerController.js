@@ -94,14 +94,14 @@ const customerController = {
         // console.log(customerEmail)
         const customer = await Customer.getCustomerByEmail(customerEmail);
         console.log(customer)
-        const id = customer.customerId;
-
+        const id = customer[0].customerId;
+        // console.log(id)
         if (!customer) {
             return res.status(404).json({ error: 'Customer not found' });
         }
         // const hashedPassword = await bcrypt.hash(customerPassword, saltRounds); 
-        console.log(customerPassword, customer.customerPassword, customer.customerId)
-        const match = await bcrypt.compare(customerPassword, customer.customerPassword);
+        console.log(customerPassword, customer[0].customerPassword, customer[0].customerId)
+        const match = await bcrypt.compare(customerPassword, customer[0].customerPassword);
         console.log(match)
         if (!match) {
             return res.status(401).json({ error: 'Incorrect password' });

@@ -5,6 +5,11 @@ const getAllOrders = async () => {
     const [orders] = await db.execute(`
         SELECT 
             c.customerName,
+            c.customerPhone,
+            c.customerAddress,
+            c.customerEmail,
+            c.customerCity,
+            c.customerZipCode,
             o.orderId,
             o.orderDate,
             o.orderStatus,
@@ -41,6 +46,11 @@ const getOrderByCustomerId = async (customerId) => {
     const [orders] = await db.execute(`
         SELECT 
             c.customerName,
+            c.customerPhone,
+            c.customerAddress,
+            c.customerEmail,
+            c.customerCity,
+            c.customerZipCode,
             o.orderId,
             o.orderDate,
             o.orderStatus,

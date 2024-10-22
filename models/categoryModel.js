@@ -23,6 +23,7 @@ const deleteCategoryById = async (categoryId) => {
 
 const getAllCategories = async () => {
     const [result] = await db.execute("SELECT * FROM categories");
+    console.log(result);
     return result;
 };
 const addCategories = async (categoryName, categoryImage) => {

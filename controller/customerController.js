@@ -225,7 +225,7 @@ const customerController = {
             console.log(customerProfilePicture);
             try {
                 const result = await Customer.updateProfile(customerId, { customerName, customerEmail, customerPhone, customerAddress, customerZipCode, customerCity, customerCountry, customerProfilePicture });
-                res.redirect('/customer') // Redirect to all blogs after successful update
+                res.redirect('/admin/customer') // Redirect to all blogs after successful update
             } catch (error) {
                 res.status(500).json({ error: error.message });
             }

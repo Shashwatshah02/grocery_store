@@ -305,6 +305,9 @@
                         <thead>
                           <tr>
                             <th>Customer Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Address</th>
                             <th>Order Id</th>
                             <th>Product</th>
                             <th>Order Date</th>
@@ -314,7 +317,7 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <% orders.forEach(order=> { %>
+                          <% orders.reverse().forEach(order=> { %>
                             <tr>
                               <td>
                                 <div class="product-name">
@@ -324,6 +327,37 @@
                                     </span>
                                   </a>
                                 </div>
+                                
+                              </td>
+                              <td>
+                                <div class="product-name">
+                                  <a href="#">
+                                    <span>
+                                      <%= order.customerPhone %>
+                                    </span>
+                                  </a>
+                                </div>
+                                
+                              </td>
+                              <td>
+                                <div class="product-name">
+                                  <a href="#">
+                                    <span>
+                                      <%= order.customerEmail %>
+                                    </span>
+                                  </a>
+                                </div>
+                                
+                              </td>
+                              <td>
+                                <div class="product-name">
+                                  <a href="#">
+                                    <span>
+                                      <%= order.customerAddress %>
+                                    </span>
+                                  </a>
+                                </div>
+                                
                               </td>
                               <td>#<%= order.orderId %>
                               </td>

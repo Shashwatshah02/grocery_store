@@ -33,12 +33,12 @@ const upload = multer({
 
 const categoryController = {
     getAllCategories: async (req, res) => {
-        try {
+        // try {
             const categories = await Category.getAllCategories();
             res.status(200).json(categories);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
+        // } catch (error) {
+        //     res.status(500).json({ error: error.message });
+        // }
     },
     getProductCategories: async (req, res) => {
         try {

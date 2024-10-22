@@ -89,18 +89,18 @@ app.post('/create-order', verifyToken, async (req, res) => {
         }
     };
 
-    try {
+    // try {
         const order = await razorpayInstance.orders.create(options);
         res.status(200).json(order);
-    } catch (error) {
-        console.error('Error creating order:', error);
-        res.status(500).json({ error: error.message });
-    }
+    // } catch (error) {
+    //     console.error('Error creating order:', error);
+    //     res.status(500).json({ error: error.message });
+    // }
 });
 
 
 app.post('/verify-payment', async (req, res) => {
-    try {
+    // try {
         // Extract the token from the Authorization header
         const token = req.headers.authorization?.split(' ')[1]; // Example: 'Bearer <token>'
         console.log(token);
@@ -151,10 +151,10 @@ app.post('/verify-payment', async (req, res) => {
             // Signature mismatch, payment verification failed
             res.status(400).json({ success: false, message: 'Invalid payment signature' });
         }
-    } catch (error) {
-        console.error('Error verifying payment:', error);
-        res.status(500).json({ success: false, error: error.message });
-    }
+    // } catch (error) {
+    //     console.error('Error verifying payment:', error);
+    //     res.status(500).json({ success: false, error: error.message });
+    // }
 });
 
 const PORT = process.env.PORT || 3000;

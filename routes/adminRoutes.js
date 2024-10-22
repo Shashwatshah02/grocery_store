@@ -62,8 +62,8 @@ router.get('/customer/', customerController.getAllCustomersAdmin);
 // router.get('/:id', customerController.getCustomerById);
 // router.post('customer/', customerController.createCustomerAdmin);
 router.post('/customer/create', customerController.createCompleteCustomerAdmin);
-router.post('/customer/forgotpassword', customerController.forgotPasswordAdmin);
-router.post('/customer/login', customerController.loginCustomerAdmin);
+// router.post('/customer/forgotpassword', customerController.forgotPasswordAdmin);
+// router.post('/customer/login', customerController.loginCustomerAdmin);
 router.get("/customer/edit/:id", customerController.getProfileAdmin);
 router.post('/customer/update/:id', customerController.updateProfileAdmin);
 // router.put('/:id', customerController.updateCustomer);
@@ -76,9 +76,9 @@ router.get("/customer/create", (req, res) => {
 // ORDER ROUTES
 router.get('/order/', orderController.getAllOrdersAdmin);
 router.post('/order/', orderController.createOrdersAdmin);
-router.post('/order/update/:id', orderController.updateOrderAdmin);
-router.get('/order/update/:id', orderController.getOrderByIdAdmin);
-router.get('/order/delete/:id', orderController.deleteOrderByIdAdmin);
+// router.post('/order/update/:id', orderController.updateOrderAdmin);
+// router.get('/order/update/:id', orderController.getOrderByIdAdmin);
+// router.get('/order/delete/:id', orderController.deleteOrderByIdAdmin);
 
 // LOGIN ROUTES
 router.route("/login")

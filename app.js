@@ -6,6 +6,7 @@ const orderRoutes = require('./routes/orderRoutes.js');
 const adminRoutes = require('./routes/adminRoutes.js');
 const cartRoutes = require('./routes/cartRoutes.js');
 const express = require("express");
+const logger = require('./logger.js');
 const path = require("path");
 const session = require("express-session");
 const jwt = require('jsonwebtoken');
@@ -60,7 +61,7 @@ app.get("/", (req, res) => {
 });
 app.post('/create-order', verifyToken, async (req, res) => {
     const customerId = req.userId;
-    if(!customerId) {
+    if (!customerId) {
         return res.status(400).json({ error: 'Invalid customer ID' });
     }
     console.log(customerId);
@@ -96,6 +97,7 @@ app.post('/create-order', verifyToken, async (req, res) => {
         const order = await razorpayInstance.orders.create(options);
         res.status(200).json(order);
     } catch (error) {
+        logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
         console.error('Error creating order:', error);
         res.status(500).json({ error: error.message });
     }
@@ -106,13 +108,13 @@ app.post('/verify-payment', verifyToken, async (req, res) => {
     try {
         // Extract the token from the Authorization header
         const customerId = req.userId;
-        if(!customerId) {
+        if (!customerId) {
             return res.status(400).json({ error: 'Invalid customer ID' });
         }
 
         // Extract Razorpay payment details from request body
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
-        
+
         if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
             return res.status(400).json({ error: 'Missing payment details' });
         }
@@ -152,10 +154,18 @@ app.post('/verify-payment', verifyToken, async (req, res) => {
             res.status(400).json({ success: false, message: 'Invalid payment signature' });
         }
     } catch (error) {
+        logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
         console.error('Error verifying payment:', error);
         res.status(500).json({ success: false, error: error.message });
     }
 });
+
+// function logErrors(err, req, res, next) {
+//     console.log(err.stack, "test");
+//     logger.error(`Error occurred: ${err.message}`, { stack: err.stack });
+//     next(err);
+// }
+// app.use(logErrors)
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

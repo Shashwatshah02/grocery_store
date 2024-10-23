@@ -1,5 +1,6 @@
 const Cart = require('../models/cartModel');
 const jwt = require('jsonwebtoken');
+const logger = require('../logger.js');
 
 const cartController = {
     getCartById: async (req, res) => {
@@ -13,6 +14,7 @@ const cartController = {
         res.status(200).json(cart);
         console.log("getCartById");
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -31,6 +33,7 @@ const cartController = {
         res.status(200).json(result);
         console.log("updateCartById");
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -50,6 +53,7 @@ const cartController = {
         res.status(200).json(result);
         console.log("deleteCartByProductId");
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -68,6 +72,7 @@ const cartController = {
         res.status(200).json(result);
         console.log("createCartByProductId");
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     }

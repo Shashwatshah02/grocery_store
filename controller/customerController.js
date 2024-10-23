@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const multer = require("multer");
 const path = require("path");
 const jwt = require("jsonwebtoken");
+const logger = require('../logger.js');
 const saltRounds = 10;
 const { generateToken } = require('../middleware/jwt.js');
 
@@ -49,6 +50,7 @@ const customerController = {
         res.status(201).json({ message: 'Customer created successfully' });
         console.log("create customer")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -59,6 +61,7 @@ const customerController = {
         res.status(200).json({ customers });
         console.log("get all customers")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -80,6 +83,7 @@ const customerController = {
         res.status(200).json({ message: 'Password updated successfully' });
         console.log("forgot password")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -109,6 +113,7 @@ const customerController = {
         res.status(200).json({ message: 'Login successful', token, customer: customer[0] });
         console.log("login customer")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message, });
         }
     },
@@ -129,6 +134,7 @@ const customerController = {
         }
         console.log("get profile")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             console.log(error);
             res.status(500).json({ error: error.message });
         }
@@ -153,6 +159,7 @@ const customerController = {
             const result = await Customer.updateProfile(customerId, { customerName, customerEmail, customerPhone, customerAddress, customerZipCode, customerCity, customerCountry, customerProfilePicture });
             res.status(200).json(result) // Redirect to all blogs after successful update
             } catch (error) {
+                logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
                 res.status(500).json({ error: error.message });
             }
         });
@@ -169,6 +176,7 @@ const customerController = {
         res.status(200).json(result);
         console.log("delete customer")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -178,6 +186,7 @@ const customerController = {
         res.render('theme/user-list', { title: 'User List', customers: customers });
         console.log("get all customers admin")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -197,6 +206,7 @@ const customerController = {
         }
         console.log("get profile admin")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             console.log(error);
             res.status(500).json({ error: error.message });
         }
@@ -221,6 +231,7 @@ const customerController = {
             await Customer.updateProfile(customerId, { customerName, customerEmail, customerPhone, customerAddress, customerZipCode, customerCity, customerCountry, customerProfilePicture });
             res.redirect('/admin/customer') // Redirect to all blogs after successful update
             } catch (error) {
+                logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
                 res.status(500).json({ error: error.message });
             }
         });
@@ -237,6 +248,7 @@ const customerController = {
         res.redirect("/admin/customer");
         console.log("delete customer admin")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -275,6 +287,7 @@ const customerController = {
 
             res.redirect('/admin/customer'); // Redirect to customer page after successful creation
             } catch (error) {
+                logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
                 res.status(500).json({ error: error.message });
             }
             console.log("create complete customer admin")

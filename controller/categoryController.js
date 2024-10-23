@@ -1,6 +1,7 @@
 const Category = require('../models/categoryModel.js');
 const multer = require("multer");
 const path = require("path");
+const logger = require('../logger.js');
 
 
 const storage = multer.diskStorage({
@@ -34,10 +35,12 @@ const upload = multer({
 const categoryController = {
     getAllCategories: async (req, res) => {
         try {
+            
             const categories = await Category.getAllCategories();
             res.status(200).json(categories);
             console.log(categories);
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -47,6 +50,7 @@ const categoryController = {
             return categories;
             console.log("getProductCategories");
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -67,6 +71,7 @@ const categoryController = {
                 res.status(201).json({ id: result.insertId, title, content, categoryId });
                 res.status(200).json(result);
             } catch (error) {
+                logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
                 res.status(500).json({ error: error.message });
             }
         });
@@ -80,8 +85,9 @@ const categoryController = {
         try {
             await Category.deleteCategoryById(categoryId); // Assuming you have this method in your Blog model
             res.status(200).json({ message: "Category deleted successfully" });
-        console.log("deleteCategorybyId");
+            console.log("deleteCategorybyId");
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -91,6 +97,7 @@ const categoryController = {
             res.render('theme/category-list', { categories });
             console.log("getAllCategoriesAdmin");
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -111,6 +118,7 @@ const categoryController = {
                 res.status(201).json({ id: result.insertId, title, content, categoryId });
                 res.redirect('/admin/categories');
             } catch (error) {
+                logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
                 res.status(500).json({ error: error.message });
             }
         });
@@ -126,6 +134,7 @@ const categoryController = {
             await Category.deleteCategoryById(categoryId); // Assuming you have this method in your Blog model
             res.redirect('/admin/categories');
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },

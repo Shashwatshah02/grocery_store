@@ -2,6 +2,8 @@ const Product = require("../models/productModel.js");
 const Category = require("../models/categoryModel.js");
 const multer = require("multer");
 const path = require("path");
+const logger = require("../logger.js");
+
 
 
 const storage = multer.diskStorage({
@@ -41,6 +43,7 @@ const productController = {
             res.status(200).json(products);
             console.log(products)
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -61,6 +64,7 @@ const productController = {
                 console.log(product);
                 res.status(200).json(product);
             } catch (error) {
+                logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
                 res.status(500).json({ error: error.message });
             }
             console.log("create product")
@@ -97,6 +101,7 @@ const productController = {
             res.status(200).json(product);
             console.log("get product by id")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -108,6 +113,7 @@ const productController = {
             res.status(200).json(product);
             console.log("delete product by id")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -117,6 +123,7 @@ const productController = {
             res.status(200).json(variations);
             console.log("get all variations")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -132,6 +139,7 @@ const productController = {
             res.status(200).json(variation);
             console.log("create variation")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -147,6 +155,7 @@ const productController = {
             res.status(200).json(variation);
             console.log("update variation")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -158,6 +167,7 @@ const productController = {
             res.status(200).json(variation);
             console.log("get variation by product id")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -169,6 +179,7 @@ const productController = {
             res.status(200).json(variation);
             console.log("delete variation by id")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -180,6 +191,7 @@ const productController = {
             res.status(200).json(products);
             console.log("get product by category id")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -189,6 +201,7 @@ const productController = {
             res.render("theme/product-list", { products });
             console.log("get all products admin")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -229,6 +242,7 @@ const productController = {
 
                 res.redirect('/admin/product');
             } catch (error) {
+                logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
                 res.status(500).json({ error: error.message });
             }
         });
@@ -273,6 +287,7 @@ const productController = {
                 const updatedProductData = await Product.getProductById(productId);
                 res.redirect('/admin/product');
             } catch (error) {
+                logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
                 res.status(500).json({ error: error.message });
             }
         });
@@ -288,6 +303,7 @@ const productController = {
             console.log(product)
             res.render('theme/edit-product', { title: 'Product Edit', product: product, productId, categories });
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -298,6 +314,7 @@ const productController = {
             const product = await Product.deleteProductById(productId);
             res.redirect('/admin/product');
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -306,6 +323,7 @@ const productController = {
             const variations = await Product.getAllVariations();
             res.status(200).json(variations);
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -320,6 +338,7 @@ const productController = {
             console.log(variation);
             res.status(200).json(variation);
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -334,6 +353,7 @@ const productController = {
             console.log(variation);
             res.status(200).json(variation);
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -344,6 +364,7 @@ const productController = {
             const variation = await Product.getVariationById(variationId);
             res.status(200).json(variation);
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -354,6 +375,7 @@ const productController = {
             const variation = await Product.deleteVariationById(variationId);
             res.status(200).json(variation);
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },

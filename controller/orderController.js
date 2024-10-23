@@ -1,4 +1,5 @@
 const Order = require('../models/orderModel.js');
+const logger = require('../logger.js');
 
 
 const orderController = {
@@ -8,6 +9,7 @@ const orderController = {
         res.status(200).json(orders);
         console.log("get all orders")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -21,6 +23,7 @@ const orderController = {
         res.status(200).json(order);
         console.log("create order")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -38,6 +41,7 @@ const orderController = {
         res.status(200).json(order);
         console.log("update order")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -52,6 +56,7 @@ const orderController = {
         res.status(200).json(order);
         console.log("get order by customer id")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -63,6 +68,7 @@ const orderController = {
         res.render('theme/order-list', { orders });
         console.log("get all orders admin")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },
@@ -76,6 +82,7 @@ const orderController = {
         res.status(200).json(order);
         console.log("create order admin")
         } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
         }
     },

@@ -36,19 +36,20 @@ const upload = multer({
 
 const productController = {
     getAllProducts: async (req, res) => {
-        // try {
+        try {
             const products = await Product.getAllProducts();
             res.status(200).json(products);
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+            console.log(products)
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     createProducts: async (req, res) => {
         upload(req, res, async (err) => {
             if (err) {
                 return res.status(400).json({ error: err });
             }
-            // try {
+            try {
                 const { title, description, categoryId, stockAtPresent, unit } = req.body;
                 console.log(title, description, categoryId, stockAtPresent, unit)
                 if (title === undefined || description === undefined || categoryId === undefined || stockAtPresent === undefined || unit === undefined) {
@@ -59,9 +60,10 @@ const productController = {
                 const product = await Product.createProducts(title, description, images, categoryId, stockAtPresent, unit);
                 console.log(product);
                 res.status(200).json(product);
-            // } catch (error) {
-            //     res.status(500).json({ error: error.message });
-            // }
+            } catch (error) {
+                res.status(500).json({ error: error.message });
+            }
+            console.log("create product")
         });
     },
     updateProduct: async (req, res) => {
@@ -69,7 +71,7 @@ const productController = {
             if (err) {
                 return res.status(400).json({ error: err });
             }
-            // try {
+            try {
                 const productId = req.params.id;
                 if(!productId) res.status(400).json({error: "Product ID is required"});
                 const updatedProduct = req.body;
@@ -80,42 +82,46 @@ const productController = {
                 const product = await Product.updateProduct(productId, updatedProduct);
                 console.log(product);
                 res.status(200).json(product);
-            // } catch (error) {
-            //     res.status(500).json({ error: error.message });
-            // }
+            } catch (error) {
+                res.status(500).json({ error: error.message });
+            }
+            console.log("update product")
         });
     },
     getProductById: async (req, res) => {
-        // try {
+        try {
             const productId = req.params.id;
             if(!productId) res.status(400).json({error: "Product ID is required"});
             const product = await Product.getProductById(productId);
-            console.log(product)
+            console.log(product, 'test')
             res.status(200).json(product);
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+            console.log("get product by id")
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     deleteProductById: async (req, res) => {
-        // try {
+        try {
             const productId = req.params.id;
             if(!productId) res.status(400).json({error: "Product ID is required"});
             const product = await Product.deleteProductById(productId);
             res.status(200).json(product);
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+            console.log("delete product by id")
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     getAllVariations: async (req, res) => {
-        // try {
+        try {
             const variations = await Product.getAllVariations();
             res.status(200).json(variations);
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+            console.log("get all variations")
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     createVariations: async (req, res) => {
-        // try {
+        try {
             const { productId, weightOption, price } = req.body;
             console.log(productId, weightOption, price);
             if (productId === undefined || weightOption === undefined || price === undefined) {
@@ -124,12 +130,13 @@ const productController = {
             const variation = await Product.createVariations(productId, weightOption, price);
             console.log(variation);
             res.status(200).json(variation);
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+            console.log("create variation")
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     updateVariation: async (req, res) => {
-        // try {
+        try {
             const variationId = req.params.id;
             if(!variationId) res.status(400).json({error: "Variation ID is required"});
             const updatedVariation = req.body;
@@ -138,54 +145,59 @@ const productController = {
             const variation = await Product.updateVariation(variationId, updatedVariation);
             console.log(variation);
             res.status(200).json(variation);
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+            console.log("update variation")
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     getVariationByProductId: async (req, res) => {
-        // try {
+        try {
             const productId = req.params.id;
             if(!productId) res.status(400).json({error: "Product ID is required"});
             const variation = await Product.getVariationByProductId(productId);
             res.status(200).json(variation);
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+            console.log("get variation by product id")
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     deleteVariationById: async (req, res) => {
-        // try {
+        try {
             const variationId = req.params.id;
             if(!variationId) res.status(400).json({error: "Variation ID is required"});
             const variation = await Product.deleteVariationById(variationId);
             res.status(200).json(variation);
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+            console.log("delete variation by id")
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     getProductByCategoryId: async (req, res) => {
-        // try {
+        try {
             const categoryId = req.params.id;
             if(!categoryId) res.status(400).json({error: "Category ID is required"});
             const products = await Product.getProductByCategoryId(categoryId);
             res.status(200).json(products);
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+            console.log("get product by category id")
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     getAllProductsAdmin: async (req, res) => {
-        // try {
+        try {
             const products = await Product.getAllProducts();
             res.render("theme/product-list", { products });
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+            console.log("get all products admin")
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     createProductsAdmin: async (req, res) => {
         upload(req, res, async (err) => {
             if (err) {
                 return res.status(400).json({ error: err });
             }
-            // try {
+            try {
                 const { title, description, categoryId, stockAtPresent, unit } = req.body;
                 console.log(title, description, categoryId, stockAtPresent, unit)
                 if (title === undefined || description === undefined || categoryId === undefined || stockAtPresent === undefined || unit === undefined) {
@@ -216,17 +228,18 @@ const productController = {
                 }
 
                 res.redirect('/admin/product');
-            // } catch (error) {
-            //     res.status(500).json({ error: error.message });
-            // }
+            } catch (error) {
+                res.status(500).json({ error: error.message });
+            }
         });
+        console.log("create product admin")
     },
     updateProductAdmin: async (req, res) => {
         upload(req, res, async (err) => {
             if (err) {
                 return res.status(400).json({ error: err });
             }
-            // try {
+            try {
                 const productId = req.params.id;
                 if(!productId) res.status(400).json({error: "Product ID is required"});
                 const {title, description, stockAtPresent, unit, categoryId} = req.body;
@@ -259,44 +272,45 @@ const productController = {
                 // Respond with the updated product
                 const updatedProductData = await Product.getProductById(productId);
                 res.redirect('/admin/product');
-            // } catch (error) {
-            //     res.status(500).json({ error: error.message });
-            // }
+            } catch (error) {
+                res.status(500).json({ error: error.message });
+            }
         });
+        console.log("update product admin")
     },
 
     getProductByIdAdmin: async (req, res) => {
-        // try {
+        try {
             const productId = req.params.id;
             if(!productId) res.status(400).json({error: "Product ID is required"});
             const product = await Product.getProductById(productId);
             const categories = await Category.getAllCategories();
             console.log(product)
             res.render('theme/edit-product', { title: 'Product Edit', product: product, productId, categories });
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     deleteProductByIdAdmin: async (req, res) => {
-        // try {
+        try {
             const productId = req.params.id;
             if(!productId) res.status(400).json({error: "Product ID is required"});
             const product = await Product.deleteProductById(productId);
             res.redirect('/admin/product');
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     getAllVariationsAdmin: async (req, res) => {
-        // try {
+        try {
             const variations = await Product.getAllVariations();
             res.status(200).json(variations);
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     createVariationsAdmin: async (req, res) => {
-        // try {
+        try {
             const { productId, weightOption, price } = req.body;
             console.log(productId, weightOption, price);
             if (productId === undefined || weightOption === undefined || price === undefined) {
@@ -305,12 +319,12 @@ const productController = {
             const variation = await Product.createVariations(productId, weightOption, price);
             console.log(variation);
             res.status(200).json(variation);
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     updateVariationAdmin: async (req, res) => {
-        // try {
+        try {
             const variationId = req.params.id;
             if(!variationId) res.status(400).json({error: "Variation ID is required"});
             const updatedVariation = req.body;
@@ -319,29 +333,29 @@ const productController = {
             const variation = await Product.updateVariation(variationId, updatedVariation);
             console.log(variation);
             res.status(200).json(variation);
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     getVariationByIdAdmin: async (req, res) => {
-        // try {
+        try {
             const variationId = req.params.id;
             if(!variationId) res.status(400).json({error: "Variation ID is required"});
             const variation = await Product.getVariationById(variationId);
             res.status(200).json(variation);
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     deleteVariationByIdAdmin: async (req, res) => {
-        // try {
+        try {
             const variationId = req.params.id;
             if(!variationId) res.status(400).json({error: "Variation ID is required"});
             const variation = await Product.deleteVariationById(variationId);
             res.status(200).json(variation);
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
 
 }

@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const cartController = {
     getCartById: async (req, res) => {
-        // try {
+        try {
         const customerId = req.userId;
         if (!customerId) {
             return res.status(400).json({ error: 'Invalid customer ID' });
@@ -11,12 +11,13 @@ const cartController = {
         console.log(customerId);
         const cart = await Cart.getCartById(customerId);
         res.status(200).json(cart);
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+        console.log("getCartById");
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     updateCartById: async (req, res) => {
-        // try {
+        try {
         const customerId = req.userId;
         if (!customerId) {
             return res.status(400).json({ error: 'Invalid customer ID' });
@@ -28,12 +29,13 @@ const cartController = {
         }
         const result = await Cart.updateCartById(customerId, productId, quantity);
         res.status(200).json(result);
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+        console.log("updateCartById");
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     deleteCartByProductId: async (req, res) => {
-        // try {
+        try {
         const customerId = req.userId;
         if (!customerId) {
             return res.status(400).json({ error: 'Invalid customer ID' });
@@ -46,12 +48,13 @@ const cartController = {
         console.log(productId);
         const result = await Cart.deleteCartByProductId(customerId, productId);
         res.status(200).json(result);
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+        console.log("deleteCartByProductId");
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     createCartByProductId: async (req, res) => {
-        // try {
+        try {
         const customerId = req.userId;
         if (!customerId) {
             return res.status(400).json({ error: 'Invalid customer ID' });
@@ -63,9 +66,10 @@ const cartController = {
         console.log(productId, quantity, customerId);
         const result = await Cart.createCartByProductId(customerId, productId, quantity, variationId);
         res.status(200).json(result);
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+        console.log("createCartByProductId");
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     }
 
 

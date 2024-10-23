@@ -37,7 +37,7 @@ const upload = multer({
 
 const customerController = {
     createCustomer: async (req, res) => {
-        // try {
+        try {
         const { customerName, customerEmail, customerPhone, customerPassword } = req.body;
         console.log(customerName, customerEmail, customerPhone, customerPassword)
         if (customerName === undefined || customerEmail === undefined || customerPhone === undefined || customerPassword === undefined) {
@@ -47,21 +47,23 @@ const customerController = {
         const customer = await Customer.createCustomer(customerName, customerEmail, customerPhone, hashedPassword);
         console.log(customer);
         res.status(201).json({ message: 'Customer created successfully' });
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+        console.log("create customer")
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
 
     getAllCustomers: async (req, res) => {
-        // try {
+        try {
         const customers = await Customer.getAllCustomers();
         res.status(200).json({ customers });
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+        console.log("get all customers")
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     forgotPassword: async (req, res) => {
-        // try {
+        try {
         const { customerEmail, customerPassword } = req.body;
         if (!customerEmail || !customerPassword) {
             return res.status(404).json({ error: 'Customer not found' });
@@ -76,29 +78,25 @@ const customerController = {
         const hashedPassword = await bcrypt.hash(customerPassword, saltRounds);
         await Customer.forgotPassword(customerEmail, hashedPassword);
         res.status(200).json({ message: 'Password updated successfully' });
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+        console.log("forgot password")
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     loginCustomer: async (req, res) => {
-        // try {
-        // const customers = await Customer.getAllCustomers();
-        // const { customerEmail, customerPassword } = req.body;
-        // console.log(customerEmail)
-        // console.log(customers)
-        // const customer = customers.find((customer) => customer.customerEmail === customerEmail);
+        try {
         const { customerEmail, customerPassword } = req.body;
         if (!customerEmail || !customerPassword) {
             return res.status(404).json({ error: 'Customer not found' });
         }
-        // console.log(customerEmail)
+        console.log(customerEmail)
         const customer = await Customer.getCustomerByEmail(customerEmail);
-        console.log(customer)
-        const id = customer[0].customerId;
-        // console.log(id)
         if (!customer) {
             return res.status(404).json({ error: 'Customer not found' });
         }
+        console.log(customer)
+        const id = customer[0].customerId;
+        // console.log(id)
         // const hashedPassword = await bcrypt.hash(customerPassword, saltRounds); 
         console.log(customerPassword, customer[0].customerPassword, customer[0].customerId)
         const match = await bcrypt.compare(customerPassword, customer[0].customerPassword);
@@ -109,9 +107,10 @@ const customerController = {
 
         const token = generateToken(id);
         res.status(200).json({ message: 'Login successful', token, customer: customer[0] });
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message, });
-        // }
+        console.log("login customer")
+        } catch (error) {
+            res.status(500).json({ error: error.message, });
+        }
     },
 
     getProfile: async (req, res) => {
@@ -120,7 +119,7 @@ const customerController = {
             res.status(404).json({ error: "No customer Id found" })
         }
 
-        // try {
+        try {
         const customer = await Customer.getProfile(customerId);
         if ((customer)) {
             console.log(customer);
@@ -128,10 +127,11 @@ const customerController = {
         } else {
             res.status(404).json({ message: "Customer not found" });
         }
-        // } catch (error) {
-        //     console.log(error);
-        //     res.status(500).json({ error: error.message });
-        // }
+        console.log("get profile")
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error.message });
+        }
     },
     updateProfile: async (req, res) => {
         upload(req, res, async (err) => {
@@ -149,34 +149,37 @@ const customerController = {
             }
             const customerProfilePicture = req.file ? req.file.path : null;
             console.log(customerProfilePicture);
-            // try {
+            try {
             const result = await Customer.updateProfile(customerId, { customerName, customerEmail, customerPhone, customerAddress, customerZipCode, customerCity, customerCountry, customerProfilePicture });
             res.status(200).json(result) // Redirect to all blogs after successful update
-            // } catch (error) {
-            //     res.status(500).json({ error: error.message });
-            // }
+            } catch (error) {
+                res.status(500).json({ error: error.message });
+            }
         });
+        // console.log("update profile")
     },
     deleteCustomer: async (req, res) => {
         const customerId = req.params.id;
         if (!customerId) {
             res.status(404).json({ error: "No customer Id found" })
         }
-        // try {
+        try {
         const result = await Customer.deleteCustomer(customerId); // Assuming you have this method in your Blog model
         //   res.redirect("/api/blogs/all");
         res.status(200).json(result);
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+        console.log("delete customer")
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
     getAllCustomersAdmin: async (req, res) => {
-        // try {
+        try {
         const customers = await Customer.getAllCustomers();
         res.render('theme/user-list', { title: 'User List', customers: customers });
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+        console.log("get all customers admin")
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
 
     getProfileAdmin: async (req, res) => {
@@ -184,7 +187,7 @@ const customerController = {
         if (!customerId) {
             res.status(404).json({ error: "No customer Id found" })
         }
-        // try {
+        try {
         const customer = await Customer.getProfile(customerId);
         if ((customer)) {
             console.log(customer);
@@ -192,10 +195,11 @@ const customerController = {
         } else {
             res.status(404).json({ message: "Customer not found" });
         }
-        // } catch (error) {
-        //     console.log(error);
-        //     res.status(500).json({ error: error.message });
-        // }
+        console.log("get profile admin")
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error.message });
+        }
     },
     updateProfileAdmin: async (req, res) => {
         upload(req, res, async (err) => {
@@ -213,26 +217,28 @@ const customerController = {
             }
             const customerProfilePicture = req.file ? req.file.path : null;
             console.log(customerProfilePicture);
-            // try {
+            try {
             await Customer.updateProfile(customerId, { customerName, customerEmail, customerPhone, customerAddress, customerZipCode, customerCity, customerCountry, customerProfilePicture });
             res.redirect('/admin/customer') // Redirect to all blogs after successful update
-            // } catch (error) {
-            //     res.status(500).json({ error: error.message });
-            // }
+            } catch (error) {
+                res.status(500).json({ error: error.message });
+            }
         });
+        // console.log("update profile admin")
     },
     deleteCustomerAdmin: async (req, res) => {
         const customerId = req.params.id;
         if (!customerId) {
             res.status(404).json({ error: "No customer Id found" })
         }
-        // try {
+        try {
         const result = await Customer.deleteCustomer(customerId); // Assuming you have this method in your Blog model
         //   res.redirect("/api/blogs/all");
         res.redirect("/admin/customer");
-        // } catch (error) {
-        //     res.status(500).json({ error: error.message });
-        // }
+        console.log("delete customer admin")
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     },
 
     createCompleteCustomerAdmin: async (req, res) => {
@@ -249,7 +255,7 @@ const customerController = {
 
             console.log(req.body);
 
-            // try {
+            try {
             // Hash the password before storing it
             const saltRounds = 10;
             const hashedPassword = await bcrypt.hash(customerPassword, saltRounds);
@@ -268,9 +274,10 @@ const customerController = {
             });
 
             res.redirect('/admin/customer'); // Redirect to customer page after successful creation
-            // } catch (error) {
-            //     res.status(500).json({ error: error.message });
-            // }
+            } catch (error) {
+                res.status(500).json({ error: error.message });
+            }
+            console.log("create complete customer admin")
         });
     }
 

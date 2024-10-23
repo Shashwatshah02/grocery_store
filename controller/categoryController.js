@@ -35,7 +35,6 @@ const upload = multer({
 const categoryController = {
     getAllCategories: async (req, res) => {
         try {
-            
             const categories = await Category.getAllCategories();
             res.status(200).json(categories);
             console.log(categories);

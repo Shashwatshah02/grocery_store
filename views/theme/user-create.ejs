@@ -216,6 +216,14 @@
                       <li><a href="/admin/order">Order List</a></li>
                     </ul>
                   </li>
+                  <li>
+                    <form action="/admin/logout" method="POST" style="display:inline;">
+                      <button type="submit" class="nav-link menu-title"
+                        style="background:none; border:none; padding:0; cursor:pointer;">
+                        <span>Log out</span>
+                      </button>
+                    </form>
+                  </li>
                     
                   </li>
                  
@@ -267,11 +275,20 @@
                       <div class="row">
                         <div class="col">
                           <div class="mb-3">
-                            <label>Password</label>
-                            <input class="form-control" type="password" name="customerPassword" placeholder="Enter Password">
+                            <label>Password - (Min of 6 letters)</label>
+                            <input 
+                              class="form-control" 
+                              type="password" 
+                              name="customerPassword" 
+                              placeholder="Enter Password" 
+                              required 
+                              minlength="6" 
+                              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" 
+                              title="Must contain at least one number, one uppercase and lowercase letter, and at least 8 or more characters">
                           </div>
                         </div>
                       </div>
+                      
           
                       <!-- Email, Phone, Country inputs -->
                       <div class="row">

@@ -222,25 +222,52 @@ const customerController = {
             }
             const customerId = req.params.id;
             if (!customerId) {
-                res.status(404).json({ error: "No customer Id found" })
+                return res.status(404).json({ error: "No customer Id found" });
             }
-            console.log(req.file);
+            console.log(req.body)
             const { customerName, customerEmail, customerPhone, customerAddress, customerZipCode, customerCity, customerCountry } = req.body;
+    
             if (!customerName || !customerEmail || !customerPhone || !customerAddress || !customerZipCode || !customerCity || !customerCountry) {
                 return res.status(400).json({ error: 'All fields are required' });
             }
-            const customerProfilePicture = req.file ? req.file.path : null;
-            console.log(customerProfilePicture);
+    
+            const existingProfilePicture = req.body.existingProfilePicture || null; // Keep track of the existing picture
+            let newProfilePicture = existingProfilePicture || null; // Default to existing or null
+    
+            if (req.file) {
+                newProfilePicture = req.file.path; // Update if a new file is uploaded
+            }
+    
+            console.log({
+                customerName,
+                customerEmail,
+                customerPhone,
+                customerAddress,
+                customerZipCode,
+                customerCity,
+                customerCountry,
+                newProfilePicture
+            });
+    
             try {
-                await Customer.updateProfile(customerId, { customerName, customerEmail, customerPhone, customerAddress, customerZipCode, customerCity, customerCountry, customerProfilePicture });
-                res.redirect('/admin/customer') // Redirect to all blogs after successful update
+                await Customer.updateProfile(customerId, { 
+                    customerName, 
+                    customerEmail, 
+                    customerPhone, 
+                    customerAddress, 
+                    customerZipCode, 
+                    customerCity, 
+                    customerCountry, 
+                    customerProfilePicture: newProfilePicture // Ensure the key matches your DB field
+                });
+                res.redirect('/admin/customer'); // Redirect after successful update
             } catch (error) {
                 logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
                 res.status(500).json({ error: error.message });
             }
         });
-        // console.log("update profile admin")
     },
+    
     deleteCustomerAdmin: async (req, res) => {
         const customerId = req.params.id;
         if (!customerId) {
@@ -262,13 +289,16 @@ const customerController = {
             if (err) {
                 return res.status(400).json({ error: err });
             }
-
+            
             const { customerName, customerPassword, customerEmail, customerPhone, customerAddress, customerZipCode, customerCity, customerCountry } = req.body;
             if (!customerName || !customerPassword || !customerEmail || !customerPhone || !customerAddress || !customerZipCode || !customerCity || !customerCountry) {
                 return res.status(400).json({ error: 'All fields are required' });
             }
             const customerProfilePicture = req.file ? req.file.path : null;
-
+            const customers = await Customer.getCustomerByEmail(customerEmail);
+            if (customers.length > 0) {
+                return res.render('theme/user-create', { errorMessage: 'Customer already exists' });
+            }
             console.log(req.body);
 
             try {

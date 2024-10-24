@@ -295,7 +295,7 @@
                         <div class="col">
                           <div class="mb-3">
                             <label>Product name</label>
-                            <input class="form-control" type="text" name="title" placeholder="Enter Product name">
+                            <input class="form-control" type="text" name="title" placeholder="Enter Product name" required>
                           </div>
                         </div>
                         <div class="col mb-3">
@@ -314,53 +314,71 @@
                         <div class="col">
                           <div class="mb-3">
                             <label>Stock At Present</label>
-                            <input class="form-control" type="text" name="stockAtPresent"
+                            <input class="form-control" type="text" name="stockAtPresent" required
                               placeholder="Enter Available Stock">
                           </div>
                         </div>
                         <div class="col">
                           <div class="mb-3">
-                            <label>Enter Unit</label>
-                            <input class="form-control" type="text" name="unit" placeholder="Enter Unit">
+                            <label for="unitSelect">Enter Unit</label>
+                            <select class="form-select" id="unitSelect" name="unit" required>
+                              <option value="">Select Unit</option>
+                              <option value="kg">Kg</option>
+                              <option value="ltr">Ltr</option>
+                              <option value="gram">Gram</option>
+                              <option value="dozen">Dozen</option>
+                              <option value="piece">Piece</option>
+                            </select>
+                          </div>
+
+                        </div>
+
+                        <div class="row">
+                          <div class="col">
+                            <div class="mb-3">
+                              <label>Product Description</label>
+                              <textarea class="form-control" name="description" id="exampleFormControlTextarea4" required
+                                rows="3"></textarea>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div class="row">
-                        <div class="col">
-                          <div class="mb-3">
-                            <label>Product Description</label>
-                            <textarea class="form-control" name="description" id="exampleFormControlTextarea4"
-                              rows="3"></textarea>
+                        <div class="row">
+                          <div class="row">
+                            <div class="col">
+                              <div class="mb-3">
+                                <label>Product Weight</label>
+                                <div>
+                                  <input class="form-control" type="number" name="weightOptions[]" required
+                                    placeholder="Enter Weight in the unit selected above" min="0" step="any">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col mb-3">
+                              <label>Product Price</label>
+                              <div>
+                                <input class="form-control" type="number" name="prices[]" placeholder="Enter Price" required
+                                  min="0" step="any">
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div class="row">
-                        <div class="col">
-                          <div class="mb-3">
-                            <label>Product Weight</label>
-                            <input class="form-control" type="text" name="weightOptions[]" placeholder="Enter Weight 1">
-                            <input class="form-control mt-3" type="text" name="weightOptions[]"
-                              placeholder="Enter Weight 2">
-                            <input class="form-control mt-3" type="text" name="weightOptions[]"
-                              placeholder="Enter Weight 3">
-                          </div>
-                        </div>
-                        <div class="col mb-3">
-                          <label>Product Price</label>
-                          <input class="form-control" type="text" name="prices[]" placeholder="Enter Price 1">
-                          <input class="form-control mt-3" type="text" name="prices[]" placeholder="Enter Price 2">
-                          <input class="form-control mt-3" type="text" name="prices[]" placeholder="Enter Price 3">
+                        <!-- Full-width button -->
+                        <div class="col-12 text-center mt-3">
+                          <button type="button" class="btn btn-primary w-100" id="addMore">+ Add More Weight and
+                            Price</button>
                         </div>
 
-                      </div>
 
+
+                      </div>
+                      <br>
                       <div class="row">
                         <div class="col">
                           <div class="mb-3">
                             <label>Upload Product Images</label>
-                            <input class="form-control" type="file" name="images" accept="image/*">
+                            <input class="form-control" type="file" name="images" accept="image/*" required>
                           </div>
                         </div>
                       </div>
@@ -369,7 +387,7 @@
                         <div class="col">
                           <div class="text-end">
                             <button type="submit" class="btn btn-secondary me-3">Add</button>
-                            <a class="btn btn-danger" href="#">Cancel</a>
+                            <!-- <a class="btn btn-danger" href="#">Cancel</a> -->
                           </div>
                         </div>
                       </div>
@@ -416,6 +434,43 @@
     <script src="/assets/js/theme-customizer/customizer.js"></script>
     <!-- login js-->
     <!-- Plugin used-->
+    <script>
+      document.getElementById('addMore').addEventListener('click', function () {
+        // Create a new row for weight and price input fields
+        var newRow = document.createElement('div');
+        newRow.classList.add('row', 'mt-3');
+
+        // Adding a new weight input field
+        var newWeightCol = document.createElement('div');
+        newWeightCol.classList.add('col');
+        var weightInput = document.createElement('input');
+        weightInput.type = 'number';
+        weightInput.name = 'weightOptions[]';
+        weightInput.placeholder = 'Enter Weight in the unit selected above';
+        weightInput.classList.add('form-control');
+        // weightInput.step = 'any'; // Allow for decimal numbers
+        newWeightCol.appendChild(weightInput);
+
+        // Adding a new price input field
+        var newPriceCol = document.createElement('div');
+        newPriceCol.classList.add('col', 'mb-3');
+        var priceInput = document.createElement('input');
+        priceInput.type = 'number';
+        priceInput.name = 'prices[]';
+        priceInput.placeholder = 'Enter Price';
+        priceInput.classList.add('form-control');
+        // priceInput.step = 'any'; // Allow for decimal numbers
+        newPriceCol.appendChild(priceInput);
+
+        // Append the new columns to the row
+        newRow.appendChild(newWeightCol);
+        newRow.appendChild(newPriceCol);
+
+        // Append the new row to the container just before the button
+        var weightContainer = document.getElementById('addMore').parentNode;
+        weightContainer.parentNode.insertBefore(newRow, weightContainer);
+      });
+    </script>
 </body>
 
 </html>

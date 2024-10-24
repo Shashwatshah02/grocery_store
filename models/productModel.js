@@ -21,6 +21,7 @@ LEFT JOIN
 GROUP BY 
     p.productId, p.images, p.title, p.description, c.categoryName, p.stockAtPresent, p.unit;
 `);
+
     return products;
 }
 

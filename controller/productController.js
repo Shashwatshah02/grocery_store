@@ -77,7 +77,7 @@ const productController = {
             }
             try {
                 const productId = req.params.id;
-                if(!productId) res.status(400).json({error: "Product ID is required"});
+                if (!productId) res.status(400).json({ error: "Product ID is required" });
                 const updatedProduct = req.body;
                 if (!updatedProduct) res.status(400).json({ error: 'All fields are required' });
                 const images = req.file ? req.file.path : null;
@@ -95,7 +95,7 @@ const productController = {
     getProductById: async (req, res) => {
         try {
             const productId = req.params.id;
-            if(!productId) res.status(400).json({error: "Product ID is required"});
+            if (!productId) res.status(400).json({ error: "Product ID is required" });
             const product = await Product.getProductById(productId);
             console.log(product, 'test')
             res.status(200).json(product);
@@ -108,7 +108,7 @@ const productController = {
     deleteProductById: async (req, res) => {
         try {
             const productId = req.params.id;
-            if(!productId) res.status(400).json({error: "Product ID is required"});
+            if (!productId) res.status(400).json({ error: "Product ID is required" });
             const product = await Product.deleteProductById(productId);
             res.status(200).json(product);
             console.log("delete product by id")
@@ -146,7 +146,7 @@ const productController = {
     updateVariation: async (req, res) => {
         try {
             const variationId = req.params.id;
-            if(!variationId) res.status(400).json({error: "Variation ID is required"});
+            if (!variationId) res.status(400).json({ error: "Variation ID is required" });
             const updatedVariation = req.body;
             if (!updatedVariation) res.status(400).json({ error: 'All fields are required' });
             console.log(variationId, updatedVariation);
@@ -162,7 +162,7 @@ const productController = {
     getVariationByProductId: async (req, res) => {
         try {
             const productId = req.params.id;
-            if(!productId) res.status(400).json({error: "Product ID is required"});
+            if (!productId) res.status(400).json({ error: "Product ID is required" });
             const variation = await Product.getVariationByProductId(productId);
             res.status(200).json(variation);
             console.log("get variation by product id")
@@ -174,7 +174,7 @@ const productController = {
     deleteVariationById: async (req, res) => {
         try {
             const variationId = req.params.id;
-            if(!variationId) res.status(400).json({error: "Variation ID is required"});
+            if (!variationId) res.status(400).json({ error: "Variation ID is required" });
             const variation = await Product.deleteVariationById(variationId);
             res.status(200).json(variation);
             console.log("delete variation by id")
@@ -186,7 +186,7 @@ const productController = {
     getProductByCategoryId: async (req, res) => {
         try {
             const categoryId = req.params.id;
-            if(!categoryId) res.status(400).json({error: "Category ID is required"});
+            if (!categoryId) res.status(400).json({ error: "Category ID is required" });
             const products = await Product.getProductByCategoryId(categoryId);
             res.status(200).json(products);
             console.log("get product by category id")
@@ -199,6 +199,7 @@ const productController = {
         try {
             const products = await Product.getAllProducts();
             res.render("theme/product-list", { products });
+            console.log(products)
             console.log("get all products admin")
         } catch (error) {
             logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
@@ -255,13 +256,16 @@ const productController = {
             }
             try {
                 const productId = req.params.id;
-                if(!productId) res.status(400).json({error: "Product ID is required"});
-                const {title, description, stockAtPresent, unit, categoryId} = req.body;
+                if (!productId) return res.status(400).json({ error: "Product ID is required" });
+
+                const { title, description, stockAtPresent, unit, categoryId, existingImage } = req.body; // **Change: Add existingImage to destructure**
+
                 if (!title || !description || !stockAtPresent || !unit || !categoryId) {
                     return res.status(400).json({ error: 'All fields are required' });
                 }
-                const images = req.file ? req.file.path : null;
-                
+
+                // **Change: Retain existing image if no new image is uploaded**
+                const images = req.file ? req.file.path : existingImage; // Use existingImage if req.file is not present
                 console.log(productId, title, description, stockAtPresent, unit, categoryId, images);
 
                 // Extract weight options and prices
@@ -272,7 +276,7 @@ const productController = {
                 console.log(weightOptions, prices);
 
                 // Update the main product details
-                await Product.updateProduct(productId, {title, description, stockAtPresent, unit, categoryId, images});
+                await Product.updateProduct(productId, { title, description, stockAtPresent, unit, categoryId, images });
 
                 // Handle product variations
                 if (weightOptions && prices) {
@@ -291,13 +295,14 @@ const productController = {
                 res.status(500).json({ error: error.message });
             }
         });
-        console.log("update product admin")
+        console.log("update product admin");
     },
+
 
     getProductByIdAdmin: async (req, res) => {
         try {
             const productId = req.params.id;
-            if(!productId) res.status(400).json({error: "Product ID is required"});
+            if (!productId) res.status(400).json({ error: "Product ID is required" });
             const product = await Product.getProductById(productId);
             const categories = await Category.getAllCategories();
             console.log(product)
@@ -310,7 +315,7 @@ const productController = {
     deleteProductByIdAdmin: async (req, res) => {
         try {
             const productId = req.params.id;
-            if(!productId) res.status(400).json({error: "Product ID is required"});
+            if (!productId) res.status(400).json({ error: "Product ID is required" });
             const product = await Product.deleteProductById(productId);
             res.redirect('/admin/product');
         } catch (error) {
@@ -345,7 +350,7 @@ const productController = {
     updateVariationAdmin: async (req, res) => {
         try {
             const variationId = req.params.id;
-            if(!variationId) res.status(400).json({error: "Variation ID is required"});
+            if (!variationId) res.status(400).json({ error: "Variation ID is required" });
             const updatedVariation = req.body;
             if (!updatedVariation) res.status(400).json({ error: 'All fields are required' });
             console.log(variationId, updatedVariation);
@@ -360,7 +365,7 @@ const productController = {
     getVariationByIdAdmin: async (req, res) => {
         try {
             const variationId = req.params.id;
-            if(!variationId) res.status(400).json({error: "Variation ID is required"});
+            if (!variationId) res.status(400).json({ error: "Variation ID is required" });
             const variation = await Product.getVariationById(variationId);
             res.status(200).json(variation);
         } catch (error) {
@@ -371,7 +376,7 @@ const productController = {
     deleteVariationByIdAdmin: async (req, res) => {
         try {
             const variationId = req.params.id;
-            if(!variationId) res.status(400).json({error: "Variation ID is required"});
+            if (!variationId) res.status(400).json({ error: "Variation ID is required" });
             const variation = await Product.deleteVariationById(variationId);
             res.status(200).json(variation);
         } catch (error) {

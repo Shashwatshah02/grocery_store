@@ -351,19 +351,23 @@
                               <%= product.unit %>
                             </td>
                             <td>
-                              <% if (product.weightOptions && product.weightOptions.trim().length> 0) { %>
-                                <ul>
-                                  <% let weightArray=product.weightOptions.split(','); %>
-                                    <% weightArray.forEach(weight=> { %>
-                                      <li>
-                                        <%= weight %>
-                                      </li>
+                              <% if (product.weightOptions && product.weightOptions.trim().length > 0) { %>
+                                  <ul>
+                                      <% 
+                                        let weightArray = product.weightOptions.split(',').map(Number); // Split and convert to numbers
+                                        weightArray.sort((a, b) => a - b); // Sort the array in ascending order
+                                      %>
+                                      <% weightArray.forEach(weight => { %>
+                                          <li>
+                                              <%= weight %>
+                                          </li>
                                       <% }) %>
-                                </ul>
-                                <% } else { %>
+                                  </ul>
+                              <% } else { %>
                                   <span>No Weight Options</span>
-                                  <% } %>
-                            </td>
+                              <% } %>
+                          </td>
+                          
 
                             <td>
                               <% if (product.prices && product.prices.trim().length> 0) { %>

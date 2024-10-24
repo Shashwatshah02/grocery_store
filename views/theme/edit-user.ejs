@@ -288,86 +288,94 @@
             <div class="col-sm-12">
               <div class="card">
                 <div class="card-body">
-                  <form action="/admin/customer/update/<%= customerId %>" method="POST" enctype="multipart/form-data">
-                    <div class="form theme-form">
-
-                      <div class="row">
-                        <div class="col">
-                          <div class="mb-3">
-                            <label>Name</label>
-                            <input class="form-control" type="text" name="customerName"
-                              value="<%= customer.customerName %>" placeholder="Enter last name">
-                          </div>
+                  <form action="/admin/customer/update/<%= customerId %>" method="POST" enctype="multipart/form-data"
+                    id="customerForm" class="form theme-form">
+                    <div class="row">
+                      <div class="col">
+                        <div class="mb-3">
+                          <label>Name</label>
+                          <input class="form-control" type="text" name="customerName"
+                            value="<%= customer.customerName %>" required placeholder="Enter Name">
                         </div>
                       </div>
-
-                      <div class="row">
-                        <div class="col-sm-4">
-                          <div class="mb-3">
-                            <label>Email</label>
-                            <input class="form-control" type="text" name="customerEmail"
-                              value="<%= customer.customerEmail %>" placeholder="Enter Email">
-                          </div>
-                        </div>
-                        <div class="col-sm-4">
-                          <div class="mb-3">
-                            <label>Phone</label>
-                            <input class="form-control" type="text" name="customerPhone"
-                              value="<%= customer.customerPhone %>" placeholder="Enter Phone">
-                          </div>
-                        </div>
-                        <div class="col-sm-4">
-                          <div class="mb-3">
-                            <label>Country</label>
-                            <input class="form-control" type="text" name="customerCountry"
-                              value="<%= customer.customerCountry %>" placeholder="Enter Country">
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <div class="col-sm-4">
-                          <div class="mb-3">
-                            <label>Address</label>
-                            <input class="form-control" type="text" name="customerAddress"
-                              value="<%= customer.customerAddress %>" placeholder="Enter Address">
-                          </div>
-                        </div>
-                        <div class="col-sm-4">
-                          <div class="mb-3">
-                            <label>Zip Code</label>
-                            <input class="form-control" type="text" name="customerZipCode"
-                              value="<%= customer.customerZipCode %>" placeholder="Enter Zip-code">
-                          </div>
-                        </div>
-                        <div class="col-sm-4">
-                          <div class="mb-3">
-                            <label>City</label>
-                            <input class="form-control" type="text" name="customerCity"
-                              value="<%= customer.customerCity %>" placeholder="Enter City">
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <div class="col">
-                          <div class="mb-3">
-                            <label>Upload Profile picture</label>
-                            <input class="form-control" type="file" name="customerProfilePicture" accept="image/*">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col">
-                          <div class="text-end">
-                            <button type="submit" class="btn btn-secondary me-3">Add</button><a class="btn btn-danger"
-                              href="#">Cancel</a>
-                          </div>
-                        </div>
-                      </div>
-
                     </div>
-                  </form>
+
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <div class="mb-3">
+                          <label>Email</label>
+                          <input class="form-control" type="email" name="customerEmail"
+                            value="<%= customer.customerEmail %>" required placeholder="Enter Email"
+                            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                            title="Please enter a valid email address (e.g., example@domain.com)">
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="mb-3">
+                          <label>Phone</label>
+                          <input class="form-control" type="text" name="customerPhone"
+                            value="<%= customer.customerPhone %>" required maxlength="10" pattern="\d{10}"
+                            title="Phone number must be exactly 10 digits." placeholder="Enter Phone">
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="mb-3">
+                          <label>Country</label>
+                          <input class="form-control" type="text" name="customerCountry"
+                            value="<%= customer.customerCountry %>" required placeholder="Enter Country">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <div class="mb-3">
+                          <label>Address</label>
+                          <input class="form-control" type="text" name="customerAddress"
+                            value="<%= customer.customerAddress %>" required placeholder="Enter Address">
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="mb-3">
+                          <label>Zip Code</label>
+                          <input class="form-control" type="text" name="customerZipCode"
+                            value="<%= customer.customerZipCode %>" required maxlength="6" pattern="\d{6}"
+                            title="Must be a 6-digit number." placeholder="Enter Zip-code">
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="mb-3">
+                          <label>City</label>
+                          <input class="form-control" type="text" name="customerCity"
+                            value="<%= customer.customerCity %>" required placeholder="Enter City">
+                        </div>
+                      </div>
+                    </div>
+
+                    <form action="/update-profile" method="POST" enctype="multipart/form-data">
+                      <input type="hidden" name="existingProfilePicture" value="<%= customer.customerProfilePicture %>">
+                      <div class="row">
+                        <div class="col">
+                          <div class="mb-3">
+                            <label>Current Profile Picture</label>
+                            <% if (customer.customerProfilePicture) { %>
+                              <div class="mb-2">
+                                <img src="/<%= customer.customerProfilePicture %>" alt="Profile Picture"
+                                  style="max-width: 150px; height: auto;">
+                              </div>
+                              <% } else { %>
+                                <span>No profile picture uploaded.</span>
+                                <% } %>
+
+                                  <label>Change Image</label>
+                                  <input class="form-control" type="file" name="customerProfilePicture"
+                                    accept="image/*">
+                          </div>
+                        </div>
+                      </div>
+                      <button type="submit" class="btn btn-primary">Update Profile</button>
+                    </form>
+
                 </div>
               </div>
             </div>

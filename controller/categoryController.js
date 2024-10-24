@@ -67,7 +67,7 @@ const categoryController = {
                     return res.status(400).json({ error: "No category added" });
                 }
                 const result = await Category.addCategories(categoryName, categoryImage);
-                res.status(201).json({ id: result.insertId, title, content, categoryId });
+                // res.status(201).json({ id: result.insertId, title, content, categoryId });
                 res.status(200).json(result);
             } catch (error) {
                 logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
@@ -113,8 +113,8 @@ const categoryController = {
                 if (categoryName === undefined) {
                     return res.status(400).json({ error: "No category added" });
                 }
-                await Category.addCategories(categoryName, categoryImage);
-                res.status(201).json({ id: result.insertId, title, content, categoryId });
+                const result = await Category.addCategories(categoryName, categoryImage);
+                // res.status(201).json({ id: result.insertId, title, content, categoryId });
                 res.redirect('/admin/categories');
             } catch (error) {
                 logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
@@ -137,6 +137,7 @@ const categoryController = {
             res.status(500).json({ error: error.message });
         }
     },
+    
 
 }
 

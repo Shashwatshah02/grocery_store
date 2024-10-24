@@ -70,7 +70,7 @@ router.post('/customer/update/:id', isAuthenticated, customerController.updatePr
 // router.put('/:id', customerController.updateCustomer);
 router.get('/customer/delete/:id', isAuthenticated, customerController.deleteCustomerAdmin);
 router.get("/customer/create", isAuthenticated, (req, res) => {
-    res.render("theme/user-create", { title: "User Registration" });
+    res.render("theme/user-create", { title: "User Registration", errorMessage: null });
 });
 
 

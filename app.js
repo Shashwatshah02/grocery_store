@@ -34,7 +34,7 @@ app.use(
         secret: "your-secret-key", // Replace with your own secret key
         resave: false, // Don't save session if it hasn't been modified
         saveUninitialized: false, // Don't create session until something is stored
-        cookie: { maxAge: 600000 }, // Session expiration time (optional, 60 seconds in this example)
+        cookie: { maxAge: 1000000  }, // Session expiration time (optional, 60 seconds in this example)
     })
 );
 

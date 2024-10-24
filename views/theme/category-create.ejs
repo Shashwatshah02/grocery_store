@@ -304,16 +304,17 @@
                       </div>
 
                       <div class="mb-3 draggable">
-                        <label for="input-file-1">File input</label>
-                        <input id="input-file-1" type="file" name="categoryImage" required>
-                        <p class="help-block">Example block-level help text here.</p>
+                        <label for="input-file-1">Upload Category Image</label>
+                        <input id="input-file-1" class="form-control" type="file" name="categoryImage" accept="image/*" required>
+                        <p class="help-block">Only image files are allowed (e.g., .jpg, .png, .gif).</p>
                       </div>
+                      
 
                       <div class="row">
                         <div class="col">
                           <div class="text-end">
                             <button type="submit" class="btn btn-secondary me-3">Add</button>
-                            <a class="btn btn-danger" href="#">Cancel</a>
+                            <!-- <a class="btn btn-danger" href="#">Cancel</a> -->
                           </div>
                         </div>
                       </div>

@@ -19,6 +19,7 @@ const bodyParser = require("body-parser");
 const Cart = require('./models/cartModel.js');
 const env = require('dotenv').config();
 const crypto = require('crypto');
+const expressLayouts = require('express-ejs-layouts');
 
 
 const Razorpay = require('razorpay');
@@ -47,6 +48,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.static('public'));
+app.use(expressLayouts);
 app.use('/customer', customerRoutes);
 app.use('/products', productRoutes);
 app.use('/categories', categoryRoutes);

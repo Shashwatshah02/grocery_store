@@ -136,9 +136,24 @@ const deleteVariationById = async (variationId) => {
 }
 
 const getProductByCategoryId = async (categoryId) => {
-    const [products] = await db.execute('SELECT * FROM product_details WHERE categoryId = ?', [categoryId]);
+    const [products] = await db.execute(`
+        SELECT 
+            p.*, 
+            v.price, 
+            v.weightOption
+        FROM 
+            product_details p
+        LEFT JOIN 
+            variations v 
+        ON 
+            p.productId = v.productId
+        WHERE 
+            p.categoryId = ?
+    `, [categoryId]);
+    
     return products;
 }
+
 
 const productModel = {
     getAllProducts,

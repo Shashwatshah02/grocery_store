@@ -188,6 +188,7 @@ const productController = {
             const categoryId = req.params.id;
             if (!categoryId) res.status(400).json({ error: "Category ID is required" });
             const products = await Product.getProductByCategoryId(categoryId);
+            console.log(products)
             res.status(200).json(products);
             console.log("get product by category id")
         } catch (error) {

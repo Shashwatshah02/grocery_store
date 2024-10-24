@@ -129,7 +129,7 @@ app.post('/verify-payment', verifyToken, async (req, res) => {
         // Verify the signature
         if (generated_signature === razorpay_signature) {
             // Payment is valid, proceed with order fulfillment
-            const cartDetails = await Cart.getCartById(customerId);
+            const cartDetails = await Cart.getCartByIdAfterPaymentConfirmation(customerId);
             console.log(cartDetails) // Assuming this returns products and finalTotalPrice
             const products = cartDetails.products; // Extract products
             const finalTotalPrice = cartDetails.finalTotalPrice;

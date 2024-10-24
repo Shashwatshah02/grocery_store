@@ -124,11 +124,12 @@
 
 
                         <li class="onhover-dropdown p-0">
-                            <form action="/admin/logout" method="POST" style="display:inline;">
-                                <button type="submit" class="btn btn-primary-light"><i data-feather="log-out"></i>Log
-                                    out</button>
+                            <form action="/admin/logout" method="POST" style="display:inline;" onsubmit="return confirmLogout();">
+                              <button type="submit" class="btn btn-primary-light">
+                                <i data-feather="log-out"></i>Log out
+                              </button>
                             </form>
-                        </li>
+                          </li>
 
                     </ul>
                 </div>
@@ -249,6 +250,12 @@
     <script src="/assets/js/theme-customizer/customizer.js"></script>
     <!-- login js-->
     <!-- Plugin used-->
+
+<script>
+    function confirmLogout() {
+      return confirm("Are you sure you want to log out?");
+    }
+  </script>
 </body>
 
 

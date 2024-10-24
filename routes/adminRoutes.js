@@ -95,7 +95,7 @@ router.route("/login")
             if (!username || !password) {
                 return res
                     .status(400)
-                    .render("login", { error: "Username and password are required" });
+                    .render("login", { error: "Username and password are required", layout: false });
             }
 
             const [user] = await db.execute(`SELECT * FROM users WHERE username = ?`, [username]);
@@ -104,7 +104,7 @@ router.route("/login")
                 // Username not found
                 return res
                     .status(400)
-                    .render("login", { error: "Username does not exist" });
+                    .render("login", { error: "Username does not exist", layout: false });
             }
 
             // Check if the password matches
@@ -117,7 +117,7 @@ router.route("/login")
 
             } else {
                 // Password is incorrect
-                return res.status(401).render("login", { error: "Incorrect password" });
+                return res.status(401).render("login", { error: "Incorrect password", layout: false });
             }
         } catch (error) {
             // Handle any server-side errors

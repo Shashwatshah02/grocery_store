@@ -80,12 +80,43 @@ const deleteOrderById = async (orderId) => {
     return result;
 }
 
+const viewInvoice = async (orderId) => {
+    const [order] = await db.execute(`
+        SELECT 
+            c.customerName,
+            c.customerPhone,
+            c.customerAddress,
+            c.customerEmail,
+            c.customerCity,
+            c.customerZipCode,
+            o.orderId,
+            o.orderDate,
+            o.orderStatus,
+            o.totalPrice,
+            o.products  -- Assuming you're storing product details in this column
+        FROM 
+            orders o
+        JOIN 
+            customer_details c ON o.customerId = c.customerId
+        WHERE 
+            o.orderId = ?
+    `, [orderId]);  // Using parameterized queries to prevent SQL injection
+    
+    // Parsing the products JSON if needed
+    if (order.length) {
+        order[0].products = JSON.parse(order[0].products); // Parsing JSON if stored as a string
+    }
+    
+    return order;
+}
+
 const orderModel = {
     getAllOrders,
     createOrders,
     updateOrder,
     getOrderByCustomerId,
     deleteOrderById,
+    viewInvoice
 };
 
 module.exports = orderModel;

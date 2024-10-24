@@ -77,6 +77,7 @@ router.get("/customer/create", isAuthenticated, (req, res) => {
 // ORDER ROUTES
 router.get('/order/', isAuthenticated, orderController.getAllOrdersAdmin);
 router.post('/order/', isAuthenticated, orderController.createOrdersAdmin);
+router.get('/order/view/:id', isAuthenticated, orderController.viewInvoiceAdmin);
 // router.post('/order/update/:id', orderController.updateOrderAdmin);
 // router.get('/order/update/:id', orderController.getOrderByIdAdmin);
 // router.get('/order/delete/:id', orderController.deleteOrderByIdAdmin);

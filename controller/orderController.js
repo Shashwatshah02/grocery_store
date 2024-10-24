@@ -86,5 +86,22 @@ const orderController = {
             res.status(500).json({ error: error.message });
         }
     },
+    viewInvoiceAdmin: async (req, res) => {
+        try {
+        const { id } = req.params;
+        if (id === undefined) {
+            return res.status(400).json({ error: 'All fields are required' });
+        }
+        const order = await Order.viewInvoice(id);
+        // res.status(200).json(order);
+        console.log(order);
+        res.render('theme/invoice', { order : order[0] });
+
+        console.log("view invoice")
+        } catch (error) {
+            logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
+            res.status(500).json({ error: error.message });
+        }
+    }
 };
 module.exports = orderController;

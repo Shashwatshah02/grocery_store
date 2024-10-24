@@ -320,7 +320,7 @@
                             <th>Order Date</th>
                             <th>Order Status</th>
                             <th>Total Price</th>
-                            <!-- <th>Invoice</th> -->
+                            <th>Invoice</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -383,11 +383,11 @@
                               </td>
                               <td>Rs <%= order.totalPrice %>
                               </td>
-                              <!-- <td>
-                                <a href="invoice.html">
+                              <td>
+                                <a href="/admin/order/view/<%= order.orderId %>" >
                                   <button class="btn btn-primary btn-xs" type="button" title="Open">Open</button>
                                 </a>
-                              </td> -->
+                              </td>
                             </tr>
                             <% }) %>
                         </tbody>

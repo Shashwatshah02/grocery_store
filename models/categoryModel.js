@@ -3,23 +3,33 @@ const { db } = require("../db.js");
 
 const deleteCategoryById = async (categoryId) => {
     try {
-        // Execute the DELETE query
+        const [defaultCategoryResult] = await db.query(
+            "SELECT categoryId FROM categories WHERE categoryName = ?",
+            ['Default-Category']
+        );
+
+        if (defaultCategoryResult.length === 0) {
+            throw new Error("Default-Category not found. Please create one.");
+        }
+
+        const defaultCategoryId = defaultCategoryResult[0].categoryId;
+        await db.query(
+            "UPDATE product_details SET categoryId = ? WHERE categoryId = ?",
+            [defaultCategoryId, categoryId]
+        );
         const [result] = await db.query(
             "DELETE FROM categories WHERE categoryId = ?",
             [categoryId]
         );
 
-        // Check if any rows were affected
-        if (result.affectedRows === 0) {
-            throw new Error("Blog post not found."); // If no rows were affected, the blog ID does not exist
-        }
-
-        return result; // Return the result for any additional handling if needed
+        return result; 
     } catch (error) {
-        // Handle any errors
+        
+        await db.rollback();
         throw new Error("Error deleting the Category: " + error.message);
     }
 };
+
 
 const getAllCategories = async () => {
     const [result] = await db.execute("SELECT * FROM categories");

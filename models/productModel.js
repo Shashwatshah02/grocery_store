@@ -137,7 +137,7 @@ const deleteVariationById = async (variationId) => {
 
 const getProductByCategoryId = async (categoryId) => {
     const [products] = await db.execute(
-        `SELECT p.productId, p.title, p.description, p.stockAtPresent, p.categoryId, 
+        `SELECT p.productId, p.title, p.description, p.stockAtPresent, p.categoryId, p.unit,
                 p.images, MIN(v.price) AS price
         FROM product_details p
         LEFT JOIN variations v ON p.productId = v.productId

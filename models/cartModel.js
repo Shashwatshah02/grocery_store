@@ -4,6 +4,7 @@ const getCartById = async (customerId) => {
     const [result] = await db.execute(
         `SELECT 
             c.quantity,
+            c.id,
             p.productId, 
             p.images, 
             p.title,  
@@ -44,10 +45,10 @@ const updateCartById = async (customerId, productId, quantity) => {
     return result;
 }
 
-const deleteCartByProductId = async (customerId, productId) => {
+const deleteCartById = async (customerId, cartId) => {
     const [result] = await db.execute(
-        "DELETE FROM cart WHERE customerId = ? AND productId = ?",
-        [customerId, productId]
+        "DELETE FROM cart WHERE customerId = ? AND id = ?",
+        [customerId, cartId]
     );
     return result;
 }
@@ -55,7 +56,7 @@ const deleteCartByProductId = async (customerId, productId) => {
 const cartModel = {
     getCartById,
     updateCartById,
-    deleteCartByProductId,
+    deleteCartById,
     createCartByProductId
 };
 

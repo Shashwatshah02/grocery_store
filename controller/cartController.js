@@ -37,21 +37,21 @@ const cartController = {
             res.status(500).json({ error: error.message });
         }
     },
-    deleteCartByProductId: async (req, res) => {
+    deleteCartById: async (req, res) => {
         try {
         const customerId = req.userId;
         if (!customerId) {
             return res.status(400).json({ error: 'Invalid customer ID' });
         }
         console.log(customerId);
-        const productId = req.params.id;
-        if (!productId) {
+        const cartId = req.params.id;
+        if (!cartId) {
             return res.status(400).json({ error: 'Invalid customer ID' });
         }
-        console.log(productId);
-        const result = await Cart.deleteCartByProductId(customerId, productId);
+        console.log(cartId);
+        const result = await Cart.deleteCartById(customerId, cartId);
         res.status(200).json(result);
-        console.log("deleteCartByProductId");
+        console.log("deleteCartById");
         } catch (error) {
             logger.error(`Error occurred: ${error.message}`, { stack: error.stack });
             res.status(500).json({ error: error.message });
